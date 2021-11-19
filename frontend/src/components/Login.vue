@@ -149,7 +149,7 @@ export default {
     methods: {
         openLoginModal() {
             openModal(LoginForm);
-        }
+        },
     }
 }
 

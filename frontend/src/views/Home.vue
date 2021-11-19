@@ -14,10 +14,5 @@ export default {
   components: {
     Login,
   },
-  methods: {
-    openLoginModal() {
-      openModal(Login);
-    }
-  }
 }
 </script>
