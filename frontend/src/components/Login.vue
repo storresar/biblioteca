@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col justify-start w-full">
+    <div class="flex flex-col justify-start h-screen">
         <header class="flex justify-between bg-black p-4">
             <img src="Doculib.png" alt="" srcset=""
             class="w-1/6 grid self-center">
@@ -7,7 +7,7 @@
                 Bienvenido a doculib
             </h3>
             <div class="flex gap-2 items-center">
-            <button
+            <button @click="openLoginModal()"
             class="rounded border-2 border-red-450 px-4 py-2 h-11 text-white shadow-lg hover:bg-red-450">
             Inicia sesión</button>
             <button
@@ -61,7 +61,7 @@
             </ul>
         </div>
 
-        <footer class="flex justify-between bg-red-450 gap-12 py-2">
+        <footer class="flex justify-between bg-red-450 gap-12 py-2 absolute bottom-0 left-0 right-0">
             <div>
                 <div class="grid justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -139,6 +139,21 @@
         </footer>
     </div>
 </template>
+
+<script>
+import { openModal } from "jenesius-vue-modal";
+import LoginForm from "./LoginForm.vue";
+
+export default {
+ 
+    methods: {
+        openLoginModal() {
+            openModal(LoginForm);
+        }
+    }
+}
+
+</script>
 
 <style scoped>
 

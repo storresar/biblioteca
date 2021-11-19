@@ -13,6 +13,11 @@ export default {
   name: 'Home',
   components: {
     Login,
+  },
+  methods: {
+    openLoginModal() {
+      openModal(Login);
+    }
   }
 }
 </script>
