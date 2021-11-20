@@ -3,7 +3,7 @@
         <header class="flex justify-between bg-black p-4">
             <img src="Doculib.png" alt="" srcset=""
             class="w-1/6 grid self-center">
-            <h3 class="text-white text-3xl grid self-center font-serif italic">
+            <h3 class="text-white text-3xl grid self-center font-serif italic hidden sm:block">
                 Bienvenido a doculib
             </h3>
             <div class="flex gap-2 items-center">
@@ -289,7 +289,7 @@ export default {
         openLoginModal() {
             openModal(LoginForm);
         },
-    }
+    },
 }
 
 </script>

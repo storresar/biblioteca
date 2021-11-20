@@ -1,5 +1,5 @@
 <template>
-  <div id="nav" class="">
+  <div id="nav">
     <router-view/>
     <widget-container-modal />
   </div>
