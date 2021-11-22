@@ -45,7 +45,7 @@
         <span class="w-full sm:w-1/3">
           <label for="tipo_documento" class="block text-xs font-semibold text-gray-600 uppercase">Tipo de documento</label>
           <select v-model="type_document"
-          class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner">
+          class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 focus:outline-none focus:bg-gray-300 focus:shadow-inner">
             <option v-for="item of options" :key="item" :value="item">{{item}}</option>
           </select>
         </span>
@@ -94,6 +94,36 @@ function validateAge(birthday) {
     return calculateAge(birthday) >= 10 && calculateAge(birthday) <= 113;
 }
 
+function validatePhone(phone){
+  if(phone.toString().split('').length == 10){
+    if(phone >= 3000000000 && phone <= 3509999999){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }else if(phone.toString().split('').length == 7 && phone.toString().charAt(0) != 0){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+function validateDoc(document){
+  if(document.toString().split('').length <= 10){
+    if(document <= 2000000000 && document > 0 && document.toString().charAt(0) != 0){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+  else{
+    return false;
+  }
+}
+
 export default {
   setup () {
     return { v_errors: useVuelidate() }
@@ -122,9 +152,9 @@ export default {
       password_confirm: { required, sameAs: sameAs(this.password), $autoDirty: true  },
       date_birth: { required, validateAge, $autoDirty: true  },
       type_document: { required, $autoDirty: true },
-      document: { required, numeric, $autoDirty: true },
+      document: { required, validateDoc, numeric, $autoDirty: true },
       address: { required, $autoDirty: true },
-      phone: { required, numeric, $autoDirty: true },
+      phone: { required, validatePhone, numeric, $autoDirty: true },
     }
   },
   mounted() {
