@@ -1,6 +1,6 @@
 <template>
 <div class="grid min-h-screen place-items-center">
-  <div class="w-11/12 px-12 py-4 bg-white sm:w-10/12 md:w-3/2 lg:w-7/12">
+  <div class="w-11/12 px-12 py-4 bg-white sm:w-10/12 md:w-3/2 lg:w-full">
     <form class="mt-6" @submit.prevent="submit">
       <div class="flex justify-between gap-3">
         <span class="w-full sm:w-1/2">

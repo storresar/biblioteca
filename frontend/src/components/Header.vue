@@ -8,10 +8,16 @@
         <div class="flex gap-2 items-center">
         <button @click="openLoginModal()"
         class="rounded border-2 border-red-450 px-4 py-2 h-11 text-white shadow-lg hover:bg-red-450">
-        Inicia sesión</button>
+            <router-link to="/login">
+                Inicia sesión
+            </router-link>
+        </button>
         <button
         class="rounded border-2 border-red-450 px-4 py-2 h-11 text-white shadow-lg hover:bg-red-450">
-        Registrarse</button>
+            <router-link to="/registro">
+                Registrate
+            </router-link>
+        </button>
         </div>
     </header>
 </template>
