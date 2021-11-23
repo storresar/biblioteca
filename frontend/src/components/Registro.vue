@@ -1,6 +1,6 @@
 <template>
 <div class="grid min-h-screen place-items-center">
-  <div class="w-11/12 p-12 bg-white sm:w-10/12 md:w-3/2 lg:w-7/12">
+  <div class="w-11/12 px-12 py-4 bg-white sm:w-10/12 md:w-3/2 lg:w-7/12">
     <form class="mt-6" @submit.prevent="submit">
       <div class="flex justify-between gap-3">
         <span class="w-full sm:w-1/2">
@@ -77,14 +77,12 @@
       <p class="flex justify-between inline-block mt-4 text-xs text-gray-500 cursor-pointer hover:text-black">¿Ya te encuentras registrado?</p>
     </form>
   </div>
-  <Footer class=""></Footer>
 </div>
 </template>
 
 <script>
 import { required, email, sameAs, numeric, minLength, maxLength } from '@vuelidate/validators'
 import useVuelidate from '@vuelidate/core'
-import Footer from './Footer.vue'
 
 function calculateAge(birthday) { // birthday is a date
     var ageDifMs = Date.now() - new Date(birthday).getTime();
@@ -127,9 +125,6 @@ function validateDoc(document){
 }
 
 export default {
-  components: {
-    Footer
-  },
   setup () {
     return { v_errors: useVuelidate() }
   },
