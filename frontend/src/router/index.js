@@ -19,6 +19,11 @@ const routes = [
     path: '/registro',
     name: 'Registro',
     component: () => import('../views/Registro_Usuarios.vue')
+  },
+  {
+    path: '/registro_documento',
+    name: 'RegistroD',
+    component: () => import('../views/Registro_Documento.vue')
   }
 ]
 const router = createRouter({

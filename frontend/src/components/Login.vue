@@ -221,8 +221,6 @@
 </template>
 
 <script>
-import { openModal } from "jenesius-vue-modal";
-import LoginForm from "./LoginForm.vue";
 import Footer from "./Footer.vue";
 import Header from "./Header.vue"
 
@@ -232,11 +230,6 @@ export default {
         Footer,
         Header
     },
-    methods: {
-        openLoginModal() {
-            openModal(LoginForm);
-        },
-    }
 }
 
 </script>

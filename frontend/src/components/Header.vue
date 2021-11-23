@@ -8,9 +8,7 @@
         <div class="flex gap-2 items-center">
         <button @click="openLoginModal()"
         class="rounded border-2 border-red-450 px-4 py-2 h-11 text-white shadow-lg hover:bg-red-450">
-            <router-link to="/login">
                 Inicia sesión
-            </router-link>
         </button>
         <button
         class="rounded border-2 border-red-450 px-4 py-2 h-11 text-white shadow-lg hover:bg-red-450">
@@ -21,3 +19,16 @@
         </div>
     </header>
 </template>
+
+<script>
+import { openModal } from "jenesius-vue-modal";
+import LoginForm from "./LoginForm.vue";
+
+export default {
+    methods: {
+        openLoginModal() {
+            openModal(LoginForm);
+        },
+    }
+}
+</script>
