@@ -35,7 +35,7 @@
           <a v-if="false" class="inline-block align-baseline font-bold text-sm text-white hover:text-red-50 transition-colors duration-200" href="#">
         Olvide mi clave
       </a>
-      <a class="inline-block align-baseline font-bold text-sm text-white hover:text-red-50 transition-colors duration-200" @click="registro">
+      <a class="bg-white hover:bg-red-50 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors duration-200 hover:text-white" @click="registro">
         Registrarse
       </a>
      </div>
@@ -49,13 +49,50 @@
 
 <script>
 import { closeModal } from "jenesius-vue-modal";
+import { useRouter } from "vue-router";
+import { ref, inject } from "vue";
+import useAuth from "@/store/useAuth.js"
 
 export default {
   name: "LoginForm",
-  methods: {
-    closeLoginModal() {
-        closeModal();
-    }
-  }
+
+  setup() {
+    const router = useRouter();
+    const auth = useAuth();
+    const swal = inject("$swal");
+    const username = ref("");
+    const password = ref("");
+
+    const closeLoginModal = () => {
+      closeModal();
+    };
+
+    const registro = () => {
+      closeModal();
+      router.push("/registro");
+    };
+
+    const login = () => {
+      auth.login(username.value, password.value)
+      .then(() => {
+        closeLoginModal();
+      }).catch((error) => {
+        swal.fire({
+          title: "Error",
+          text: error.toString(),
+          icon: "error",
+          confirmButtonText: "Aceptar",
+        });
+      });
+    };
+
+    return {
+      closeLoginModal,
+      registro,
+      login,
+      username,
+      password,
+    };
+  },
 }
 </script>
