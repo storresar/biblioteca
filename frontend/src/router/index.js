@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
+import Admin from '../views/Admin.vue'
 
 const routes = [
   {
@@ -16,6 +17,9 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
+    path: '/admin',
+    component: Admin
+  },{
     path: '/registro',
     name: 'Registro',
     component: () => import('../views/Registro_Usuarios.vue')
@@ -30,5 +34,7 @@ const router = createRouter({
   history: createWebHistory(),
   routes
 })
+
+
 
 export default router

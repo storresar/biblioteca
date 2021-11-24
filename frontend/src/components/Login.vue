@@ -1,5 +1,6 @@
 <template>
     <div class="flex flex-col justify-start">
+
         <Header></Header>
         <nav class="flex justify-center py-2 bg-red-450">
             <input type="text" placeholder="Busque un documento por titulo"
@@ -225,10 +226,17 @@ import Footer from "./Footer.vue";
 import Header from "./Header.vue"
 
 export default {
+ 
+    methods: {
+        openLoginModal() {
+            openModal(LoginForm);
+        },
+
 
     components: {
         Footer,
         Header
+
     },
 }
 
