@@ -76,6 +76,7 @@ export default {
       auth.login(username.value, password.value)
       .then(() => {
         closeLoginModal();
+        
       }).catch((error) => {
         swal.fire({
           title: "Error",

@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.response import Response
-from .models import user,client
-from .serializers import clientSerializer,userSerializer
+from .models import user,client,author,author_request
+from .serializers import clientSerializer,userSerializer,author_requestSerialiazer,authorSerializer
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 
@@ -15,7 +15,12 @@ class userViewSet(viewsets.ModelViewSet):
 class clientViewSet(viewsets.ModelViewSet):
     queryset = client.objects.all()
     serializer_class = clientSerializer
-    
+class author_requestViewSet(viewsets.ModelViewSet):
+    queryset =author_request.objects.all()
+    serializer_class = author_requestSerialiazer
+class author_ViewSet(viewsets.ModelViewSet):
+    queryset = author.objects.all()
+    serializer_class = authorSerializer
 class CustomAuthToken(ObtainAuthToken):
 
     def post(self, request, *args, **kwargs):

@@ -23,7 +23,17 @@ class client(models.Model):
     address = models.CharField(max_length=30)
     phone_number = models.CharField(max_length=30)
     state = models.CharField(max_length=30)
-   
+
+class author_request(models.Model):
+    id_client = models.ForeignKey(client,on_delete=models.DO_NOTHING)
+    state = models.CharField(max_length=30)
+
+class author(models.Model):
+    id_request = models.ForeignKey(author_request,on_delete = models.CASCADE)
+    num_posts = models.PositiveSmallIntegerField(default=0)
+    num_wait_posts = models.PositiveSmallIntegerField()
+
+
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)

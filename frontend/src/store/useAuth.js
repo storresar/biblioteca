@@ -4,11 +4,10 @@ const apiUrl = "http://localhost:8000/roro/"
 
  const useAuth = defineStore('auth', {
     state: () => ({
-        userId: localStorage.getItem('userId') ? localStorage.getItem('userId') : undefined,
         token: localStorage.getItem('token') ? localStorage.getItem('token') : undefined,
+        userId: localStorage.getItem('userId') ? localStorage.getItem('userId') : undefined,
         isLoggedIn: false,
     }),
-    
     actions: {
         async login(username, password) {
             const response = await fetch(`${apiUrl}token-auth/`, {
@@ -23,14 +22,16 @@ const apiUrl = "http://localhost:8000/roro/"
             })
             if (response.ok) {
                 const data = await response.json()
-                this.updateLoggedState(data.user)
+                this.updateLoggedState(data)
             } else throw new Error("Error en con las credenciales")
         },
-        updateLoggedState({ user, token }) {
-            this.state.userId = user.id
-            this.state.token = token
-            localStorage.setItem('token', token)
-            localStorage.setItem('userId', user.id)
+        updateLoggedState(data) {
+            console.log(data.user_id)
+            
+            this.state.token = data.token
+            this.state.userId = data.user_id
+            localStorage.setItem('token', data.token)
+            localStorage.setItem('userId', data.user_id)
         }
     }
 })

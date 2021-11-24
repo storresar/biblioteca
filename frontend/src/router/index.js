@@ -19,7 +19,8 @@ const routes = [
   {
     path: '/admin',
     component: Admin
-  },{
+  },
+  {
     path: '/registro',
     name: 'Registro',
     component: () => import('../views/Registro_Usuarios.vue')

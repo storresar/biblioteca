@@ -227,12 +227,6 @@ import Header from "./Header.vue"
 
 export default {
  
-    methods: {
-        openLoginModal() {
-            openModal(LoginForm);
-        },
-
-
     components: {
         Footer,
         Header
