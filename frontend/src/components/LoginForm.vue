@@ -49,19 +49,50 @@
 
 <script>
 import { closeModal } from "jenesius-vue-modal";
+import { useRouter } from "vue-router";
+import { ref, inject } from "vue";
+import useAuth from "@/store/useAuth.js"
 
 export default {
   name: "LoginForm",
-  methods: {
-    closeLoginModal() {
 
-        closeModal()
+  setup() {
+    const router = useRouter();
+    const auth = useAuth();
+    const swal = inject("$swal");
+    const username = ref("");
+    const password = ref("");
 
-    },
-    registro(){
-      this.$router.push("/registro")
-      closeModal()
-    }
-  }
+    const closeLoginModal = () => {
+      closeModal();
+    };
+
+    const registro = () => {
+      closeModal();
+      router.push("/registro");
+    };
+
+    const login = () => {
+      auth.login(username.value, password.value)
+      .then(() => {
+        closeLoginModal();
+      }).catch((error) => {
+        swal.fire({
+          title: "Error",
+          text: error.toString(),
+          icon: "error",
+          confirmButtonText: "Aceptar",
+        });
+      });
+    };
+
+    return {
+      closeLoginModal,
+      registro,
+      login,
+      username,
+      password,
+    };
+  },
 }
 </script>
