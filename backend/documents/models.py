@@ -5,6 +5,10 @@ from django.db.models.base import Model
 class type_document(models.Model):
     name_doc = models.TextField(max_length=60)
 
+
+    def __str__(self):
+        return self.name_doc
+
 class document(models.Model):
     title = models.TextField(max_length=60)
     publication_date = models.DateField(auto_now=False, auto_now_add=False)

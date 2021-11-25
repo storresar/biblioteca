@@ -95,8 +95,12 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+		'NAME' : 'defaultdb',
+		'USER' : 'doadmin',
+		'PASSWORD' : 'DHZb9kbU6otz9u5c',
+		'HOST' : 'db-postgresql-nyc3-26224-do-user-8625564-0.b.db.ondigitalocean.com', #si tienes otra dirección host debes remplazar esta
+		'PORT' : '25060' #si lo dejas vacío tomara el puerto por default
     }
 }
 

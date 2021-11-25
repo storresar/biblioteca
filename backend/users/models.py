@@ -9,8 +9,16 @@ from django.db.models.signals import post_save
 class roles(models.Model):
     name_rol = models.CharField(max_length=10)
 
+    def __str__(self):
+        return self.name_rol
+
+
 class user(AbstractUser):
     id_role = models.ForeignKey(roles,on_delete= models.DO_NOTHING, null=True)
+
+    def __str__(self):
+        return self.username
+
 
 class id_document(models.Model):
     name_doc = models.CharField(max_length=30)
