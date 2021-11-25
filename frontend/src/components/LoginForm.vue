@@ -52,6 +52,7 @@ import { closeModal } from "jenesius-vue-modal";
 import { useRouter } from "vue-router";
 import { ref, inject } from "vue";
 import useAuth from "@/store/useAuth.js"
+import useUsers from "@/store/useUsers.js"
 
 export default {
   name: "LoginForm",
@@ -62,6 +63,7 @@ export default {
     const swal = inject("$swal");
     const username = ref("");
     const password = ref("");
+    const users = useUsers();
 
     const closeLoginModal = () => {
       closeModal();
@@ -74,17 +76,29 @@ export default {
 
     const login = () => {
       auth.login(username.value, password.value)
-      .then(() => {
-        closeLoginModal();
-        
-      }).catch((error) => {
+      .then(() => getUser())
+      .then(user => {
+        if (user.id_role === 1) {
+          router.push('/admin');
+        } else {
+          router.push('/usuario');
+        }
+        closeModal();
+      })
+      .catch((error) => {
         swal.fire({
           title: "Error",
           text: error.toString(),
           icon: "error",
           confirmButtonText: "Aceptar",
         });
+        console.error(error);
       });
+    };
+
+    const getUser = async () => {
+      await users.getUser(auth.userId);
+      return users.user;
     };
 
     return {

@@ -28,8 +28,8 @@ const apiUrl = "http://localhost:8000/roro/"
         updateLoggedState(data) {
             console.log(data.user_id)
             
-            this.state.token = data.token
-            this.state.userId = data.user_id
+            this.token = data.token
+            this.userId = data.user_id
             localStorage.setItem('token', data.token)
             localStorage.setItem('userId', data.user_id)
         }
