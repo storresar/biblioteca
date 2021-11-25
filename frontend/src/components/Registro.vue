@@ -74,7 +74,7 @@
         Registrarse
       </button>
       
-      <p class="flex justify-between inline-block mt-4 text-xs text-gray-500 cursor-pointer hover:text-black">¿Ya te encuentras registrado?</p>
+      <p class=" justify-between inline-block mt-4 text-xs text-gray-500 cursor-pointer hover:text-black">¿Ya te encuentras registrado?</p>
     </form>
   </div>
 </div>
