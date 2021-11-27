@@ -2,7 +2,7 @@
     <div class="admin">
         <Sidebar/>
         <NavbarUser/>
-        <button class="ml-2 inline-flex items-center justify-center  h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-red-350 hover:bg-purple-accent-700">DSKALJD </button>
+        <router-view class="mx-12 my-2"/>
     </div>
 </template>
 

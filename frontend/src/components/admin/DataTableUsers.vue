@@ -143,14 +143,12 @@ export default {
     async setup() {
         //const swal = inject('$swal')
         const users = useUsers()
-        const getUsers = async () => {
-            await users.getUsers();
-        };
-        this.users = computed(() => getUsers)
+        await users.getUsers()
+        const usuarios = computed(() => users.users)
         const nPages = 5
         const begin = ref(0)
         const end = ref(nPages)
-        const paginated = computed(() => users.value.slice(begin.value, end.value))
+        const paginated = computed(() => usuarios.value.slice(begin.value, end.value))
         const backPage = () => {
             if (begin.value !== 0) begin.value -= nPages
             else begin.value = 0
