@@ -154,22 +154,28 @@ export default {
   setup () {
     return { v_errors: useVuelidate() }
   },
+  props: {
+    user: {
+      type: Object,
+      required: true
+    }
+  },
   data() {
     return {
-      firstname: 'Juan',
-      lastname: 'Quintero',
-      email: 'gaortega@unbosque.edu.co',
-      password: 'Ronditas11',
-      password_confirm: 'Ronditas11',
-      date_birth: '10/15/1999',
+      firstname: this.user.firstname,
+      lastname: this.user.firstname,
+      email: this.user.firstname,
+      password: '',
+      password_confirm: '',
+      date_birth: this.user.firstname,
       type_document: [],
-      type_selected: 1,
-      document: '1019152187',
-      address: 'aKI',
-      phone: '3212223755',
+      type_selected: this.user.firstname,
+      document: this.user.firstname,
+      address: this.user.firstname,
+      phone: this.user.firstname,
       options: ['Cedula', 'Tarjeta de identidad'],
-      id_role: 1,
-      username: 'juanquintero',
+      id_role: this.user.firstname,
+      username: this.user.firstname,
     }
   },
   validations () {

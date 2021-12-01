@@ -145,7 +145,7 @@ export default {
         const users = useUsers()
         await users.getUsers()
         const usuarios = computed(() => users.users)
-        const nPages = 8
+        const nPages = 10
         const begin = ref(0)
         const end = ref(nPages)
         const paginated = computed(() => usuarios.value.slice(begin.value, end.value))
