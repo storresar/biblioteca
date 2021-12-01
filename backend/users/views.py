@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.response import Response
-from .models import user,client,author,author_request
+from .models import user,client,author,author_request, id_document
 from .serializers import clientSerializer,userSerializer,author_requestSerialiazer,authorSerializer, idDocumentSerializer
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -13,7 +13,7 @@ class userViewSet(viewsets.ModelViewSet):
     serializer_class = userSerializer
 
 class idDocumentViewSet(viewsets.ModelViewSet):
-    queryset = user.objects.all()
+    queryset = id_document.objects.all()
     serializer_class = idDocumentSerializer
 
 class clientViewSet(viewsets.ModelViewSet):
