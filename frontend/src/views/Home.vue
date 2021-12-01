@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-
     <Login/>
   </div>
 </template>
@@ -13,6 +12,6 @@ export default {
   name: 'Home',
   components: {
     Login,
-  }
+  },
 }
 </script>
