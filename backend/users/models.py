@@ -24,6 +24,7 @@ class id_document(models.Model):
     name_doc = models.CharField(max_length=30)
 
 class client(models.Model):
+    id_user = models.ForeignKey(user,on_delete=models.CASCADE)
     born_date = models.DateField()
     id_document = models.ForeignKey(id_document,on_delete=models.DO_NOTHING)
     is_author = models.BooleanField()
