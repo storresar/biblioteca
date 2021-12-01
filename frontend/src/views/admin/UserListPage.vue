@@ -24,7 +24,7 @@ export default {
     methods: {
         abrirModalRegistro(){
           //  openModal(ModalRegistro)
-          console.log('xd');
+          this.$router.push('/admin/registro')
         }
     }
 }

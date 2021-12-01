@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models import fields
 from rest_framework import serializers
-from .models import user,client,author,author_request
+from .models import user,client,author,author_request,id_document
 from django.contrib.auth.hashers import make_password
 
 class userSerializer(serializers.ModelSerializer):
@@ -23,4 +23,9 @@ class author_requestSerialiazer(serializers.ModelSerializer):
 class authorSerializer(serializers.ModelSerializer):
     class Meta:
         model = author
+        fields = '__all__'
+
+class idDocumentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = id_document
         fields = '__all__'

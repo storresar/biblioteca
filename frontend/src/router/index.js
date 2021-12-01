@@ -12,10 +12,14 @@ const routes = [
     path: '/admin',
     component: Admin,
     children: [
-        {
+      {
         path: 'userlist',
         component: () => import(/* webpackChunkName: "about" */ '../views/admin/UserListPage.vue'),
       },
+      {
+        path: 'registro',
+        component: () => import(/* webpackChunkName: "about" */ '../views/admin/Registro.vue'),
+      }
     ]
   },
   {

@@ -9,7 +9,7 @@ const crudUser = defineStore('users', {
     }),
     actions: {
         updateUsers(users) {
-            const user = this.state.users
+            const user = this.users
             if (user) {
                 this.users = users.filter(obj => obj.id !== user.id)
             } else {
@@ -17,7 +17,7 @@ const crudUser = defineStore('users', {
             }
         },
         async getUsers() {
-            const response = await fetch(`${apiUrl}users`)
+            const response = await fetch(`${apiUrl}users/`)
             const data = await response.json()
             if (response.ok) {
                 this.updateUsers(data)
@@ -32,7 +32,7 @@ const crudUser = defineStore('users', {
             } else throw new Error("Error en el servidor, intentelo mas tarde")
         },
         async createUser(user) {
-            const response = await fetch(`${apiUrl}users`, {
+            const response = await fetch(`${apiUrl}users/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -42,6 +42,7 @@ const crudUser = defineStore('users', {
             const data = await response.json()
             if (response.ok) {
                 this.getUsers(data)
+                return data
             } else throw new Error("Error en el servidor, intentelo mas tarde")
 
         },

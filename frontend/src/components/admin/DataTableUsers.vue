@@ -145,7 +145,7 @@ export default {
         const users = useUsers()
         await users.getUsers()
         const usuarios = computed(() => users.users)
-        const nPages = 5
+        const nPages = 8
         const begin = ref(0)
         const end = ref(nPages)
         const paginated = computed(() => usuarios.value.slice(begin.value, end.value))
@@ -155,7 +155,7 @@ export default {
             end.value = begin.value + nPages
         }
         const fowardPage = () => {
-            if (begin.value >= 0 && begin.value+nPages <= users.value.length) {
+            if (begin.value >= 0 && begin.value+nPages <= usuarios.value.length) {
                 begin.value += nPages
             } else{
                 begin.value = 0
@@ -182,7 +182,7 @@ export default {
             } else openModal(ModalModificar, {user})
         }*/
         return {
-            users,
+            users: usuarios.value,
             paginated, backPage, fowardPage,
             begin, end
         }
