@@ -97,7 +97,9 @@
       <button type="submit" class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
         Modificar usuario
       </button>
-      
+      <button @click="regresar()" class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
+        Regresar
+      </button>
     </form>
   </div>
 </div>
@@ -196,6 +198,14 @@ export default {
     .then(data => {
       this.type_document = data
     })
+    this.$swal.fire({
+      title: 'Espere un momento',
+      html: 'estamos registrandolo en el sistema',
+      allowOutsideClick: false,
+      didOpen: () => {
+        this.$swal.showLoading()
+      }
+    });
     // guardar los datos del usuario en la data
     this.getUser(this.$route.params.id)
     .then(user => {
@@ -215,14 +225,17 @@ export default {
           this.address = client.address
           this.phone = client.phone_number
           this.id_client = client.id
+          this.$swal.close()
         })
       }
     })
-
   },
   methods: {
     ...mapActions(useUsers, ['updateUser', 'getUser']),
     ...mapActions(useClients, ['updateClient', 'getClient']),
+    regresar(){
+      this.$router.go(-1)
+    },
     async submit () {
       const valid = await this.v_errors.$validate()
       if (valid) {

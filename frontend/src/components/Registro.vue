@@ -70,11 +70,15 @@
       <p v-if="v_errors.phone.$error" class="text-sm text-red-150 m-2">Número telefonico no válido</p>
 
 
+
       <button type="submit" class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
         Registrarse
       </button>
+      <button @click="regresar()" class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
+        Regresar
+      </button>
       
-      <p class=" justify-between inline-block mt-4 text-xs text-gray-500 cursor-pointer hover:text-black">¿Ya te encuentras registrado?</p>
+      <p class=" justify-center inline-block mt-4 text-xs text-gray-500 cursor-pointer hover:text-black">¿Ya te encuentras registrado?</p>
     </form>
   </div>
 </div>
@@ -83,6 +87,7 @@
 <script>
 import { required, email, sameAs, numeric, minLength, maxLength } from '@vuelidate/validators'
 import useVuelidate from '@vuelidate/core'
+import vueRecaptcha from 'vue3-recaptcha2';
 
 function calculateAge(birthday) { // birthday is a date
     var ageDifMs = Date.now() - new Date(birthday).getTime();
@@ -163,6 +168,9 @@ export default {
     
   },
   methods: {
+    regresar(){
+      this.$router.push('/')
+    },
     async submit () {
       console.log(this.email);
       const valid = await this.v_errors.$validate()
