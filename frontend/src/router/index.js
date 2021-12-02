@@ -1,12 +1,27 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Admin from '../views/admin/Admin.vue'
+import Client from '../views/client/Client.vue'
 
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/client',
+    component: Client,
+    children:[
+      {
+        path: 'reserve',
+        component: () => import(/* webpackChunkName: "about" */ '../views/client/DocumentList.vue'),
+      },
+      {
+        path: 'myReserves',
+        component: () => import(/* webpackChunkName: "about" */ '../views/client/MyReserves.vue'),
+      },
+    ],
   },
   {
     path: '/admin',

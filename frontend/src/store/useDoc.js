@@ -2,32 +2,32 @@ import { defineStore } from 'pinia'
 
 const apiUrl = "http://localhost:8000/roro/"
 
-const crudClient = defineStore('clients', {
+const crudDocuments = defineStore('documents', {
     state: () => ({
-        clients: undefined,
-        client: undefined,
+        documents: undefined,
+        document: undefined,
     }),
     actions: {
-        updateClients(clients) {
-            this.clients = clients
+        updateDocuments(documents) {
+            this.documents = documents
         },
-        async getClients() {
-            const response = await fetch(`${apiUrl}clients/`)
+        async getDocuments() {
+            const response = await fetch(`${apiUrl}documents/`)
             const data = await response.json()
             if (response.ok) {
-                this.updateClients(data)
+                this.updateDocuments(data)
             } else throw new Error("Error en el servidor, intentelo mas tarde")
 
         },
-        async getClient(id) {
-            const response = await fetch(`${apiUrl}clients/?id_user=${id}`)
+        async getDocument(id) {
+            const response = await fetch(`${apiUrl}documents/${id}/`)
             const data = await response.json()
             if (response.ok) {
-                this.client = data[0]
+                this.client = data
             } else throw new Error("Error en el servidor, intentelo mas tarde")
         },
-        async createClient(client) {
-            const response = await fetch(`${apiUrl}clients/`, {
+        async createDocument(client) {
+            const response = await fetch(`${apiUrl}documents/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -40,29 +40,13 @@ const crudClient = defineStore('clients', {
             } else throw new Error("Error en el servidor, intentelo mas tarde")
 
         },
-        async createPetitionAuthor(petition){
-            console.log(JSON.stringify(petition))
-            const response = await fetch(`${apiUrl}author-request/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(petition),
-            })
-            const data = await response.json()
-            if (response.ok) {
-                console.log('MELO')
-                console.log(data)
-            } else throw new Error("Error en el servidor, intentelo mas tarde")
-
-        },
-        async updateClient(client) {
-            const response = await fetch(`${apiUrl}clients/${client.id}`, {
+        async updateDocument(document) {
+            const response = await fetch(`${apiUrl}documents/${document.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(client),
+                body: JSON.stringify(document),
             })
             const data = await response.json()
             if (response.ok) {
@@ -70,8 +54,8 @@ const crudClient = defineStore('clients', {
             } else throw new Error("Error en el servidor, intentelo mas tarde")
 
         },
-        async deleteClient(client) {
-            const response = await fetch(`${apiUrl}users/${client.id}`, {
+        async deleteDocument(document) {
+            const response = await fetch(`${apiUrl}documents/${document.id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -83,4 +67,4 @@ const crudClient = defineStore('clients', {
         },
     }
 })
-export default crudClient
+export default crudDocuments

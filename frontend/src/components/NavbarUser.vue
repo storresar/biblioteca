@@ -45,7 +45,7 @@
                 </button>
             </div>
         </div>
-        <button
+        <button @click="logout()"
             class="rounded border-2 border-red-450 px-3 py-1 h-8  text-sm text-white shadow-lg hover:bg-red-450">
             Cerrar Sesión</button>
             </div>
@@ -54,3 +54,14 @@
 
     </nav>
 </template>
+<script>
+    export default {
+
+        methods:{
+            logout(){  
+                window.localStorage.clear()
+                this.$router.push("/")
+            }
+        }
+    }
+</script>

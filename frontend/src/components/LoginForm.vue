@@ -81,7 +81,7 @@ export default {
         if (user.id_role === 1) {
           router.push('/admin');
         } else {
-          router.push('/usuario');
+          router.push('/client');
         }
         closeModal();
       })

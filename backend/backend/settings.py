@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'corsheaders',
      #APLICACIONES
     'users',
-    'documents'
+    'documents',
+    'reserve'
 ]
 
 REST_FRAMEWORK = {
