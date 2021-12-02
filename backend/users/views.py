@@ -19,6 +19,15 @@ class idDocumentViewSet(viewsets.ModelViewSet):
 class clientViewSet(viewsets.ModelViewSet):
     queryset = client.objects.all()
     serializer_class = clientSerializer
+
+    def get_queryset(self):
+        id_user = self.request.query_params.get('id_user')
+        print(id_user)
+        if(id_user == None):
+            return client.objects.all()
+        else:
+            return client.objects.filter(id_user=id_user)
+
 class author_requestViewSet(viewsets.ModelViewSet):
     queryset =author_request.objects.all()
     serializer_class = author_requestSerialiazer

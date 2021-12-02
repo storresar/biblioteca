@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import document,lectures,book,scientific_article
+from .models import document,lectures,book,scientific_article,audit_documents
 
 class documentSerializer(serializers.ModelSerializer):
     class Meta():
@@ -16,4 +16,9 @@ class bookSerializer(serializers.ModelSerializer):
 class scientific_articleSerializer(serializers.ModelSerializer):
     class Meta():
         model = scientific_article
+        fields = '__all__'
+
+class audit_documentsSerializer(serializers.ModelSerializer):
+    class Meta():
+        model = audit_documents
         fields = '__all__'

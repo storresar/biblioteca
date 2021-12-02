@@ -2,76 +2,67 @@ import { defineStore } from 'pinia'
 
 const apiUrl = "http://localhost:8000/roro/"
 
-const crudClient = defineStore('clients', {
+const crudReservations = defineStore('resevations', {
     state: () => ({
-        clients: undefined,
-        client: undefined,
+        resevations: undefined,
+        resevation: undefined,
     }),
     actions: {
-        updateClients(clients) {
-            this.clients = clients
+        updateResevations(resevations) {
+            this.resevations = resevations
         },
-        async getClients() {
-            const response = await fetch(`${apiUrl}clients/`)
+        async getResevations() {
+            const response = await fetch(`${apiUrl}reservations/`)
             const data = await response.json()
             if (response.ok) {
-                this.updateClients(data)
+                this.updateResevations(data)
             } else throw new Error("Error en el servidor, intentelo mas tarde")
 
         },
-        async getClient(id) {
-            const response = await fetch(`${apiUrl}clients/?id_user=${id}`)
+        async getMyReservations(id){
+            const response = await fetch(`${apiUrl}reservations/?id_client=${id}`)
             const data = await response.json()
             if (response.ok) {
-                this.client = data[0]
+                this.resevations = data
             } else throw new Error("Error en el servidor, intentelo mas tarde")
         },
-        async createClient(client) {
-            const response = await fetch(`${apiUrl}clients/`, {
+        async getResevation(id) {
+            const response = await fetch(`${apiUrl}reservations/${id}/`)
+            const data = await response.json()
+            if (response.ok) {
+                this.resevation = data
+            } else throw new Error("Error en el servidor, intentelo mas tarde")
+        },
+        async createResevation(resevation) {
+            const response = await fetch(`${apiUrl}reservations/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(client),
+                body: JSON.stringify(resevation),
             })
             const data = await response.json()
             if (response.ok) {
-                this.getClients(data)
+                this.getResevation(data)
             } else throw new Error("Error en el servidor, intentelo mas tarde")
 
         },
-        async createPetitionAuthor(petition){
-            console.log(JSON.stringify(petition))
-            const response = await fetch(`${apiUrl}author-request/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(petition),
-            })
-            const data = await response.json()
-            if (response.ok) {
-                console.log('MELO')
-                console.log(data)
-            } else throw new Error("Error en el servidor, intentelo mas tarde")
-
-        },
-        async updateClient(client) {
-            const response = await fetch(`${apiUrl}clients/${client.id}`, {
+        async updateResevation(resevation) {
+            const response = await fetch(`${apiUrl}resevations/${resevation.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(client),
+                body: JSON.stringify(document),
             })
             const data = await response.json()
             if (response.ok) {
-                this.getClient(data)
+                this.getResevation(data)
             } else throw new Error("Error en el servidor, intentelo mas tarde")
 
         },
-        async deleteClient(client) {
-            const response = await fetch(`${apiUrl}users/${client.id}`, {
+        async deleteResevation(resevation) {
+            const response = await fetch(`${apiUrl}resevations/${resevation.id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -83,4 +74,4 @@ const crudClient = defineStore('clients', {
         },
     }
 })
-export default crudClient
+export default crudReservations
