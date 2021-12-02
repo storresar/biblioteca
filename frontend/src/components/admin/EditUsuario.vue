@@ -21,14 +21,14 @@
       <div class="flex flex-col sm:flex-row justify-between gap-3">
         <span class="w-full sm:w-1/2">
           <label for="email" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">E-mail</label>
-          <input type="text" name="email" placeholder="john.doe@company.com" autocomplete="email" v-model="email"
-          class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" />
+          <input type="text" name="email" disabled="true" placeholder="john.doe@company.com" autocomplete="email" v-model="email"
+          class="block w-full p-3 mt-2 text-gray-700 bg-gray-400 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" />
           <p v-if="v_errors.email.$error" class="text-sm text-red-150 m-2">Ingrese un email valido.</p>
         </span>
         <span class="w-full sm:w-1/2">
           <label for="email" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Nombre de usuario</label>
-          <input type="text" name="email" placeholder="john.doe@company.com" autocomplete="email" v-model="username"
-          class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" />
+          <input type="text" name="email" disabled="true" placeholder="john.doe@company.com" autocomplete="email" v-model="username"
+          class="block w-full p-3 mt-2 text-gray-700 bg-gray-400 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" />
           <p v-if="v_errors.username.$error" class="text-sm text-red-150 m-2">Ingrese nombre de usuario valido.</p>
         </span>
       </div>
@@ -54,15 +54,15 @@
       <div class="flex flex-col sm:flex-row justify-between gap-3 mt-2">
         <span class="w-full sm:w-1/3">
           <label for="tipo_documento" class="block text-xs font-semibold text-gray-600 uppercase">Tipo de documento</label>
-          <select v-model="type_selected"
-          class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 focus:outline-none focus:bg-gray-300 focus:shadow-inner">
+          <select v-model="type_selected" disabled="true"
+          class="block w-full p-3 mt-2 text-gray-700 bg-gray-500 focus:outline-none focus:bg-gray-300 focus:shadow-inner">
             <option v-for="item of type_document" :key="item.id" :value="item.id">{{item.name_doc}}</option>
           </select>
         </span>
         <span class="w-full sm:w-2/3">
         <label for="documento" class="block text-xs font-semibold text-gray-600 uppercase">Número de documento</label>
-        <input type="text" name="documento" v-model="document"
-        class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
+        <input type="text" name="documento" v-model="document" disabled="true"
+        class="block w-full p-3 mt-2 text-gray-700 bg-gray-400 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
         <p v-if="v_errors.document.$error" class="text-sm text-red-150 m-2">Este documento no es válido</p>
 
         </span>
@@ -95,7 +95,7 @@
 
 
       <button type="submit" class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
-        Registrarse
+        Modificar usuario
       </button>
       
     </form>
@@ -154,33 +154,33 @@ export default {
   setup () {
     return { v_errors: useVuelidate() }
   },
-  props: {
+  /*props: {
     user: {
       type: Object,
       required: true
     }
-  },
+  },*/
   data() {
     return {
-      firstname: this.user.firstname,
-      lastname: this.user.firstname,
-      email: this.user.firstname,
-      password: '',
-      password_confirm: '',
-      date_birth: this.user.firstname,
+      firstname: 'Juan',
+      lastname: 'Quintero',
+      email: 'gaortega@unbosque.edu.co',
+      password: 'Ronditas11',
+      password_confirm: 'Ronditas11',
+      date_birth: '10/15/1999',
       type_document: [],
-      type_selected: this.user.firstname,
-      document: this.user.firstname,
-      address: this.user.firstname,
-      phone: this.user.firstname,
+      type_selected: 1,
+      document: '1019152187',
+      address: 'aKI',
+      phone: '3212223755',
       options: ['Cedula', 'Tarjeta de identidad'],
-      id_role: this.user.firstname,
-      username: this.user.firstname,
+      id_role: 1,
+      username: 'juanquintero',
     }
   },
   validations () {
     return {
-      firstname: { required, $autoDirty: true  },
+      firstname: { required, $autoDirty: true },
       username: { required, $autoDirty: true  },
       lastname: { required, $autoDirty: true  },
       email: { required, email, $autoDirty: true  },
@@ -192,6 +192,7 @@ export default {
       phone: { required, validatePhone, numeric, $autoDirty: true },
     }
   },
+  
   mounted() {
     //Todo : llamar al backend y guardar los tipos de documentos en type_document en un array
     fetch('http://localhost:8000/roro/iddocument/')
@@ -203,12 +204,12 @@ export default {
     
   },
   methods: {
-    ...mapActions(useUsers, ['createUser']),
-    ...mapActions(useClients, ['createClient']),
+    ...mapActions(useUsers, ['updateUser']),
+    ...mapActions(useClients, ['updateClient']),
     async submit () {
       const valid = await this.v_errors.$validate()
       if (valid) {
-        const {id} = await this.createUser({
+        const {id} = await this.updateUser({
           first_name: this.firstname,
           username: this.username,
           last_name: this.lastname,
@@ -218,7 +219,7 @@ export default {
           id_role: parseInt(this.id_role),
         })
         if (this.id_role == 2) {
-          await this.createClient({
+          await this.updateClient({
             born_date: this.date_birth.split('/').reverse().join('-'),
             is_author : false,
             num_document: this.document,

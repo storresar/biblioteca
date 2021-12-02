@@ -81,7 +81,6 @@
                                 </div>
                             </template>
                         </Popper>
-                        
                     </td>
                     </tr>                        
                 </tbody>
