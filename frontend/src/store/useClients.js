@@ -24,6 +24,7 @@ const crudClient = defineStore('clients', {
             const data = await response.json()
             if (response.ok) {
                 this.client = data[0]
+                return data[0]
             } else throw new Error("Error en el servidor, intentelo mas tarde")
         },
         async createClient(client) {
@@ -57,8 +58,8 @@ const crudClient = defineStore('clients', {
 
         },
         async updateClient(client) {
-            const response = await fetch(`${apiUrl}clients/${client.id}`, {
-                method: 'PUT',
+            const response = await fetch(`${apiUrl}clients/${client.id}/`, {
+                method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                 },

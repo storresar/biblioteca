@@ -34,7 +34,11 @@ const routes = [
       {
         path: 'registro',
         component: () => import(/* webpackChunkName: "about" */ '../views/admin/Registro.vue'),
-      }
+      },
+      {
+        path: 'editUser/:id',
+        component: () => import(/* webpackChunkName: "about" */ '../views/admin/EditUser.vue'),
+      },
     ]
   },
   {

@@ -135,13 +135,19 @@
 </template>
 
 <script>
-import { computed, /*inject,*/ ref } from 'vue'
+import { computed, inject, ref } from 'vue'
 import useUsers from "@/store/useUsers.js"
+import Popper from "vue3-popper";
+import { useRouter } from 'vue-router'
 //import { openModal } from 'jenesius-vue-modal'
 //import ModalModificar from './ModalModificar.vue'
 export default {
+    components: {
+      Popper,
+    },
     async setup() {
-        //const swal = inject('$swal')
+        const router = useRouter();
+        const swal = inject('$swal')
         const users = useUsers()
         await users.getUsers()
         const usuarios = computed(() => users.users)
@@ -162,29 +168,27 @@ export default {
             }
             end.value = begin.value + nPages
         }
-        /*const deleteUser = (userId => {
+        const deleteUser = (userId => {
             swal.fire({
             title: 'Espere un momento',
-            html: 'Estamos eliminando el usuario :3',
+            html: 'Estamos eliminando el usuario.',
             allowOutsideClick: false,
             didOpen: () => {
                 swal.showLoading()
                 }
             });
-            store.dispatch('deleteUser', userId)
+            users.deleteUser(userId)
             .then(() => swal.fire({title: 'Usuario eliminado', icon:'success'}))
-            .catch(() => swal.fire({title: 'Error en el sistema', icon:'error'}))
+            .catch((e) => swal.fire({title: e.toString(), icon:'error'}))
         })
         const modifyUser = async user => {
-            if (user.rol === 2) {
-                await store.dispatch('', user.id)
-                openModal(ModalModificar, {user})
-            } else openModal(ModalModificar, {user})
-        }*/
+            router.push({path:`editUser/${user.id}`, params: {user}})
+        }
         return {
             users: usuarios.value,
             paginated, backPage, fowardPage,
-            begin, end
+            begin, end,
+            deleteUser, modifyUser
         }
     },
 }
