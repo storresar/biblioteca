@@ -6,6 +6,7 @@ const crudDocuments = defineStore('documents', {
     state: () => ({
         documents: undefined,
         document: undefined,
+        audit: undefined,
     }),
     actions: {
         updateDocuments(documents) {
@@ -65,6 +66,13 @@ const crudDocuments = defineStore('documents', {
                 throw new Error("Error en el servidor, intentelo mas tarde")
             }
         },
+        async getAudit(){
+            const response = await fetch(`${apiUrl}audit/`)
+            const data = await response.json()
+            if (response.ok) {
+                this.audit = data
+            } else throw new Error("Error en el servidor, intentelo mas tarde")
+        }
     }
 })
 export default crudDocuments

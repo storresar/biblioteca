@@ -39,6 +39,10 @@ const routes = [
         path: 'editUser/:id',
         component: () => import(/* webpackChunkName: "about" */ '../views/admin/EditUser.vue'),
       },
+      {
+        path: 'auditlist',
+        component: () => import(/* webpackChunkName: "about" */ '../views/admin/AuditDocs.vue'),
+      },
     ]
   },
   {
