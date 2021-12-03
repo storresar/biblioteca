@@ -200,7 +200,7 @@ export default {
     })
     this.$swal.fire({
       title: 'Espere un momento',
-      html: 'estamos registrandolo en el sistema',
+      html: 'estamos cargando el sistema.',
       allowOutsideClick: false,
       didOpen: () => {
         this.$swal.showLoading()
@@ -225,9 +225,8 @@ export default {
           this.address = client.address
           this.phone = client.phone_number
           this.id_client = client.id
-          this.$swal.close()
         })
-      }
+      } this.$swal.close()
     })
   },
   methods: {
@@ -249,17 +248,16 @@ export default {
         }
         if (this.password) user.password = this.password
         await this.updateUser(user)
-        if (this.user.id_role == 2) {
+        if (this.id_role == 2) {
           await this.updateClient({
-            id: this.client.id,
+            id: this.id_client,
             born_date: this.date_birth.split('/').reverse().join('-'),
             is_author : false,
             num_document: this.document,
             address: this.address,
             phone_number: this.phone,
-            state: this.client.state,
-            id_document: this.client.id_document,
-            id_user: this.user.id,
+            id_document: parseInt(this.type_selected),
+            id_user: this.id_user,
           })
         }
         this.$swal({
