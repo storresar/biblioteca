@@ -43,6 +43,10 @@ const routes = [
         path: 'auditlist',
         component: () => import(/* webpackChunkName: "about" */ '../views/admin/AuditDocs.vue'),
       },
+      {
+        path: 'docslist',
+        component: () => import(/* webpackChunkName: "about" */ '../views/admin/DocsListPage.vue'),
+      },
     ]
   },
   {
