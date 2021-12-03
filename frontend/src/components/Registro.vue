@@ -2,7 +2,7 @@
 <div class="grid min-h-screen place-items-center">
   <div class="w-11/12 px-12 py-4 bg-white sm:w-10/12 md:w-3/2 lg:w-full">
     <form class="mt-6" @submit.prevent="submit">
-      <div class="flex justify-between gap-3">
+      <div class="flex flex-col sm:flex-row justify-between gap-3">
         <span class="w-full sm:w-1/2">
           <label for="firstname" class="block text-xs font-semibold text-gray-600 uppercase">Nombres</label>
           <input id="firstname" type="text" name="firstname" placeholder="John" autocomplete="given-name" v-model="firstname"
@@ -41,7 +41,7 @@
       <p v-if="v_errors.password_confirm.$error" class="text-sm text-red-150 m-2">Las claves no coinciden.</p>
 
       
-      <div class="flex justify-between gap-3 mt-2">
+      <div class="flex flex-col sm:flex-row justify-between gap-3 mt-2">
         <span class="w-full sm:w-1/3">
           <label for="tipo_documento" class="block text-xs font-semibold text-gray-600 uppercase">Tipo de documento</label>
           <select v-model="type_document"
@@ -69,12 +69,26 @@
       class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" />
       <p v-if="v_errors.phone.$error" class="text-sm text-red-150 m-2">Número telefonico no válido</p>
 
+      <div class="flex justify-center mt-2">
+        <vue-recaptcha siteKey="6Ld3Y-wcAAAAAJOH0wFvfqG53ob76ilO7B2TQHMZ"
+        size="normal"
+        theme="light"
+        :tabindex="0"
+        @verify="recaptchaVerified"
+        @expire="recaptchaExpired"
+        @fail="recaptchaFailed"
+        ref="vueRecaptcha">
+        </vue-recaptcha>
+      </div>
 
-      <button type="submit" class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
+      <button type="submit" class="w-full py-3 mt-2 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
         Registrarse
       </button>
+      <button @click="regresar()" class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
+        Regresar
+      </button>
       
-      <p class=" justify-between inline-block mt-4 text-xs text-gray-500 cursor-pointer hover:text-black">¿Ya te encuentras registrado?</p>
+      <p class=" justify-center inline-block mt-4 text-xs text-gray-500 cursor-pointer hover:text-black">¿Ya te encuentras registrado?</p>
     </form>
   </div>
 </div>
@@ -83,6 +97,10 @@
 <script>
 import { required, email, sameAs, numeric, minLength, maxLength } from '@vuelidate/validators'
 import useVuelidate from '@vuelidate/core'
+import vueRecaptcha from 'vue3-recaptcha2';
+import { mapActions } from 'pinia'
+import useUsers from '@/store/useUsers.js'
+import useClients from '@/store/useClients.js'
 
 function calculateAge(birthday) { // birthday is a date
     var ageDifMs = Date.now() - new Date(birthday).getTime();
@@ -125,6 +143,9 @@ function validateDoc(document){
 }
 
 export default {
+  components: {
+    vueRecaptcha,
+  },
   setup () {
     return { v_errors: useVuelidate() }
   },
@@ -140,7 +161,8 @@ export default {
       document: '1019152187',
       address: 'aKI',
       phone: '3212223755',
-      options: ['Cedula', 'Tarjeta de identidad']
+      options: ['Cedula', 'Tarjeta de identidad'],
+      captchaVerified: false,
     }
   },
   validations () {
@@ -163,10 +185,48 @@ export default {
     
   },
   methods: {
+    ...mapActions(useUsers, ['verifyCaptcha, registerUser']),
+    ...mapActions(useClients, ['registerClient']),
+    regresar(){
+      this.$router.push('/')
+    },
     async submit () {
       console.log(this.email);
       const valid = await this.v_errors.$validate()
       if (valid) {
+        if (this.captchaVerified) {
+          this.registerUser({
+            firstname: this.firstname,
+            lastname: this.lastname,
+            email: this.email,
+            password: this.password,
+            date_birth: this.date_birth,
+            type_document: this.type_document,
+            document: this.document,
+            address: this.address,
+            phone: this.phone,
+          })
+          this.registerClient({
+            firstname: this.firstname,
+            lastname: this.lastname,
+            email: this.email,
+            password: this.password,
+            date_birth: this.date_birth,
+            type_document: this.type_document,
+            document: this.document,
+            address: this.address,
+            phone: this.phone,
+          })
+          this.$router.push('/')
+        } else {
+          this.$refs.vueRecaptcha.reset()
+          this.$swal({
+            title: 'Error',
+            text: 'Por favor verifica que no eres un robot',
+            type: 'error',
+            confirmButtonText: 'Ok'
+          })
+        }
         this.$swal({
           title: '¡Registro exitoso!',
           text: 'Ahora puedes iniciar sesión.',
@@ -181,7 +241,21 @@ export default {
           confirmButtonText: 'Ok'
         })
       }
-    }
+    },
+    recaptchaVerified(response) {
+      this.verifyCaptcha({'g-recaptcha-response': response})
+      .then(() => this.captchaVerified = true)
+      .catch(() => {
+        this.$swal('Error', 'Reintente la verificacion de captcha', 'error')
+        this.recaptchaExpired()
+      })
+    },
+    recaptchaExpired() {
+      this.$refs.vueRecaptcha.reset();
+    },
+    recaptchaFailed() {
+      this.$swal('Error', 'Reintente la verificacion de captcha', 'error')
+    },
   }
 }
 </script>

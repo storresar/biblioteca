@@ -73,6 +73,19 @@ const crudUser = defineStore('users', {
                 return 'El usuario ha sido eliminadp con exito.'
             } else throw new Error("Error en el servidor, intentelo mas tarde")
         },
+        async verifyCaptcha(captcha) {
+            const response = await fetch('https://rocky-basin-43749.herokuapp.com/api/verificar_captcha/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(captcha),
+            })
+            const data = await response.json()
+            if (response.ok) {
+                return data
+            } else throw new Error("Error en el servidor, intentelo mas tarde")
+        },
     }
 })
 export default crudUser

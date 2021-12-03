@@ -97,7 +97,9 @@
       <button type="submit" class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
         Modificar usuario
       </button>
-      
+      <button @click="regresar()" class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
+        Regresar
+      </button>
     </form>
   </div>
 </div>
@@ -196,6 +198,14 @@ export default {
     .then(data => {
       this.type_document = data
     })
+    this.$swal.fire({
+      title: 'Espere un momento',
+      html: 'estamos cargando el sistema.',
+      allowOutsideClick: false,
+      didOpen: () => {
+        this.$swal.showLoading()
+      }
+    });
     // guardar los datos del usuario en la data
     this.getUser(this.$route.params.id)
     .then(user => {
@@ -216,13 +226,15 @@ export default {
           this.phone = client.phone_number
           this.id_client = client.id
         })
-      }
+      } this.$swal.close()
     })
-
   },
   methods: {
     ...mapActions(useUsers, ['updateUser', 'getUser']),
     ...mapActions(useClients, ['updateClient', 'getClient']),
+    regresar(){
+      this.$router.go(-1)
+    },
     async submit () {
       const valid = await this.v_errors.$validate()
       if (valid) {
@@ -236,17 +248,16 @@ export default {
         }
         if (this.password) user.password = this.password
         await this.updateUser(user)
-        if (this.user.id_role == 2) {
+        if (this.id_role == 2) {
           await this.updateClient({
-            id: this.client.id,
+            id: this.id_client,
             born_date: this.date_birth.split('/').reverse().join('-'),
             is_author : false,
             num_document: this.document,
             address: this.address,
             phone_number: this.phone,
-            state: this.client.state,
-            id_document: this.client.id_document,
-            id_user: this.user.id,
+            id_document: parseInt(this.type_selected),
+            id_user: this.id_user,
           })
         }
         this.$swal({
