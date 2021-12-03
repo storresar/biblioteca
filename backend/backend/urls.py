@@ -20,5 +20,6 @@ from django.urls.conf import include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('roro/',include('users.urls')),
-    path('roro/',include('documents.urls'))
+    path('roro/',include('documents.urls')),
+    path('roro/',include('reserve.urls'))
 ]

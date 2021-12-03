@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'corsheaders',
      #APLICACIONES
     'users',
-    'documents'
+    'documents',
+    'reserve'
 ]
 
 REST_FRAMEWORK = {
@@ -122,6 +123,8 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+GOOGLE_RECAPTCHA_SECRET_KEY = '6LfqrHMdAAAAAEgUePNAxI-TZzGSlL7MaS1FIDHE'
 
 
 # Internationalization

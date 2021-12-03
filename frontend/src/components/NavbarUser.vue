@@ -36,7 +36,7 @@
         </div>
         <div class="absolute gap-3 inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <!-- Profile dropdown -->
-             <p class="text-white text-xs">USUARIO:</p>
+             <p class="text-white text-xs">USUARIO: {{user.username.toUpperCase()}}</p>
             <div class="ml-3 relative">
 
             <div>
@@ -45,7 +45,7 @@
                 </button>
             </div>
         </div>
-        <button
+        <button @click="logout()"
             class="rounded border-2 border-red-450 px-3 py-1 h-8  text-sm text-white shadow-lg hover:bg-red-450">
             Cerrar Sesión</button>
             </div>
@@ -54,3 +54,19 @@
 
     </nav>
 </template>
+<script>
+    import useUsers from '@/store/useUsers.js'
+    import { mapState } from 'pinia'
+    export default {
+
+        methods:{
+            logout(){  
+                window.localStorage.clear()
+                this.$router.push("/")
+            },
+        },
+        computed:{
+            ...mapState(useUsers, [ "user" ])
+        }
+    }
+</script>

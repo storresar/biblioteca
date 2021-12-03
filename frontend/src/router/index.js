@@ -1,12 +1,27 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Admin from '../views/admin/Admin.vue'
+import Client from '../views/client/Client.vue'
 
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/client',
+    component: Client,
+    children:[
+      {
+        path: 'reserve',
+        component: () => import(/* webpackChunkName: "about" */ '../views/client/DocumentList.vue'),
+      },
+      {
+        path: 'myReserves',
+        component: () => import(/* webpackChunkName: "about" */ '../views/client/MyReserves.vue'),
+      },
+    ],
   },
   {
     path: '/admin',
@@ -19,7 +34,19 @@ const routes = [
       {
         path: 'registro',
         component: () => import(/* webpackChunkName: "about" */ '../views/admin/Registro.vue'),
-      }
+      },
+      {
+        path: 'editUser/:id',
+        component: () => import(/* webpackChunkName: "about" */ '../views/admin/EditUser.vue'),
+      },
+      {
+        path: 'auditlist',
+        component: () => import(/* webpackChunkName: "about" */ '../views/admin/AuditDocs.vue'),
+      },
+      {
+        path: 'docslist',
+        component: () => import(/* webpackChunkName: "about" */ '../views/admin/DocsListPage.vue'),
+      },
     ]
   },
   {

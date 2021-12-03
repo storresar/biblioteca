@@ -33,3 +33,9 @@ class book(models.Model):
 class scientific_article(models.Model):
     id_doc = models.ForeignKey(document,on_delete=models.CASCADE)
     ssn = models.CharField(max_length=50)
+
+class audit_documents(models.Model):
+    id_document = models.ForeignKey(document,on_delete=models.CASCADE)
+    type_audit = models.CharField(max_length=50) 
+    date = models.DateField(auto_now=True)
+

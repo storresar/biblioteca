@@ -29,6 +29,7 @@ const crudUser = defineStore('users', {
             const data = await response.json()
             if (response.ok) {
                 this.user = data
+                return this.user
             } else throw new Error("Error en el servidor, intentelo mas tarde")
         },
         async createUser(user) {
@@ -47,8 +48,8 @@ const crudUser = defineStore('users', {
 
         },
         async updateUser(user) {
-            const response = await fetch(`${apiUrl}users/${user.id}`, {
-                method: 'PUT',
+            const response = await fetch(`${apiUrl}users/${user.id}/`, {
+                method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -60,20 +61,29 @@ const crudUser = defineStore('users', {
             } else throw new Error("Error en el servidor, intentelo mas tarde")
 
         },
-        async deleteUser(user) {
-            const response = await fetch(`${apiUrl}users/${user.id}`, {
+        async deleteUser(id) {
+            const response = await fetch(`${apiUrl}users/${id}/`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
                 },
             })
+            if (response.status === 204) {
+                this.getUsers()
+                return 'El usuario ha sido eliminadp con exito.'
+            } else throw new Error("Error en el servidor, intentelo mas tarde")
+        },
+        async verifyCaptcha(captcha) {
+            const response = await fetch('https://rocky-basin-43749.herokuapp.com/api/verificar_captcha/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(captcha),
+            })
             const data = await response.json()
             if (response.ok) {
-                if (data.id === this.state.user.id) {
-                    this.state.user = data
-                } else {
-                    this.getUsers(data)
-                }
+                return data
             } else throw new Error("Error en el servidor, intentelo mas tarde")
         },
     }

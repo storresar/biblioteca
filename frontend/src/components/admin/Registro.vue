@@ -90,6 +90,9 @@
       <button type="submit" class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
         Registrarse
       </button>
+      <button @click="regresar()" class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
+        Regresar
+      </button>
       
     </form>
   </div>
@@ -187,6 +190,9 @@ export default {
   methods: {
     ...mapActions(useUsers, ['createUser']),
     ...mapActions(useClients, ['createClient']),
+    regresar(){
+      this.$router.go(-1)
+    },
     async submit () {
       const valid = await this.v_errors.$validate()
       if (valid) {

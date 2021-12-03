@@ -18,10 +18,20 @@
 
         </span>
       </div>
-      <label for="email" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">E-mail</label>
-      <input type="text" name="email" placeholder="john.doe@company.com" autocomplete="email" v-model="email"
-      class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" />
-      <p v-if="v_errors.email.$error" class="text-sm text-red-150 m-2">Ingrese un email valido.</p>
+      <div class="flex flex-col sm:flex-row justify-between gap-3">
+        <span class="w-full sm:w-1/2">
+          <label for="email" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">E-mail</label>
+          <input type="text" name="email" disabled="true" placeholder="john.doe@company.com" autocomplete="email" v-model="email"
+          class="block w-full p-3 mt-2 text-gray-700 bg-gray-400 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" />
+          <p v-if="v_errors.email.$error" class="text-sm text-red-150 m-2">Ingrese un email valido.</p>
+        </span>
+        <span class="w-full sm:w-1/2">
+          <label for="email" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Nombre de usuario</label>
+          <input type="text" name="email" disabled="true" placeholder="john.doe@company.com" autocomplete="email" v-model="username"
+          class="block w-full p-3 mt-2 text-gray-700 bg-gray-400 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" />
+          <p v-if="v_errors.username.$error" class="text-sm text-red-150 m-2">Ingrese nombre de usuario valido.</p>
+        </span>
+      </div>
 
       
       <label for="date" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Fecha de nacimiento</label>
@@ -37,24 +47,41 @@
       
       <label for="password-confirm" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Confirma la constraseña</label>
       <input type="password" name="password-confirm" placeholder="**" v-model="password_confirm"
-      class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
+      class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner"/>
       <p v-if="v_errors.password_confirm.$error" class="text-sm text-red-150 m-2">Las claves no coinciden.</p>
 
       
       <div class="flex flex-col sm:flex-row justify-between gap-3 mt-2">
         <span class="w-full sm:w-1/3">
           <label for="tipo_documento" class="block text-xs font-semibold text-gray-600 uppercase">Tipo de documento</label>
-          <select v-model="type_document"
-          class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 focus:outline-none focus:bg-gray-300 focus:shadow-inner">
-            <option v-for="item of options" :key="item" :value="item">{{item}}</option>
+          <select v-model="type_selected" disabled="true"
+          class="block w-full p-3 mt-2 text-gray-700 bg-gray-500 focus:outline-none focus:bg-gray-300 focus:shadow-inner">
+            <option v-for="item of type_document" :key="item.id" :value="item.id">{{item.name_doc}}</option>
           </select>
         </span>
         <span class="w-full sm:w-2/3">
         <label for="documento" class="block text-xs font-semibold text-gray-600 uppercase">Número de documento</label>
-        <input type="text" name="documento" v-model="document"
-        class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
+        <input type="text" name="documento" v-model="document" disabled="true"
+        class="block w-full p-3 mt-2 text-gray-700 bg-gray-400 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
         <p v-if="v_errors.document.$error" class="text-sm text-red-150 m-2">Este documento no es válido</p>
 
+        </span>
+      </div>
+
+      <div class="flex flex-col sm:flex-row justify-between gap-3">
+        <span class="w-full sm:w-2/3">
+          <label for="phone" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Número telefonico</label>
+          <input type="text" name="phone" v-model="phone"
+          class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" />
+          <p v-if="v_errors.phone.$error" class="text-sm text-red-150 m-2">Número telefonico no válido</p>
+        </span>
+        <span class="w-full sm:w-1/3">
+          <label for="tipo_documento" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Tipo de usuario</label>
+          <select v-model="id_role"
+          class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 focus:outline-none focus:bg-gray-300 focus:shadow-inner">
+            <option value="1">Administrador</option>
+            <option value="2">Cliente</option>
+          </select>
         </span>
       </div>
 
@@ -64,31 +91,15 @@
       <p v-if="v_errors.address.$error" class="text-sm text-red-150 m-2">Este campo es requerido</p>
 
 
-      <label for="phone" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Número telefonico</label>
-      <input type="text" name="phone" v-model="phone"
-      class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" />
-      <p v-if="v_errors.phone.$error" class="text-sm text-red-150 m-2">Número telefonico no válido</p>
+      
 
-      <div class="flex justify-center mt-2">
-        <vue-recaptcha siteKey="6Ld3Y-wcAAAAAJOH0wFvfqG53ob76ilO7B2TQHMZ"
-        size="normal"
-        theme="light"
-        :tabindex="0"
-        @verify="recaptchaVerified"
-        @expire="recaptchaExpired"
-        @fail="recaptchaFailed"
-        ref="vueRecaptcha">
-        </vue-recaptcha>
-      </div>
 
-      <button type="submit" class="w-full py-3 mt-2 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
-        Registrarse
+      <button type="submit" class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
+        Modificar usuario
       </button>
       <button @click="regresar()" class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
         Regresar
       </button>
-      
-      <p class=" justify-center inline-block mt-4 text-xs text-gray-500 cursor-pointer hover:text-black">¿Ya te encuentras registrado?</p>
     </form>
   </div>
 </div>
@@ -97,10 +108,9 @@
 <script>
 import { required, email, sameAs, numeric, minLength, maxLength } from '@vuelidate/validators'
 import useVuelidate from '@vuelidate/core'
-import vueRecaptcha from 'vue3-recaptcha2';
 import { mapActions } from 'pinia'
-import useUsers from '@/store/useUsers.js'
 import useClients from '@/store/useClients.js'
+import useUsers from '@/store/useUsers.js'
 
 function calculateAge(birthday) { // birthday is a date
     var ageDifMs = Date.now() - new Date(birthday).getTime();
@@ -143,93 +153,116 @@ function validateDoc(document){
 }
 
 export default {
-  components: {
-    vueRecaptcha,
-  },
   setup () {
     return { v_errors: useVuelidate() }
   },
   data() {
     return {
-      firstname: 'Juan',
-      lastname: 'Quintero',
-      email: 'gaortega@unbosque.edu.co',
-      password: 'Ronditas11',
-      password_confirm: 'Ronditas11',
-      date_birth: '10/15/1999',
-      type_document: 'Cedula',
-      document: '1019152187',
-      address: 'aKI',
-      phone: '3212223755',
+      firstname: '',
+      lastname: '',
+      email: '',
+      password: '',
+      password_confirm: '',
+      date_birth: '',
+      type_document: [],
+      type_selected: 1,
+      document: '',
+      address: '',
+      phone: '',
       options: ['Cedula', 'Tarjeta de identidad'],
-      captchaVerified: false,
+      id_role: 1,
+      username: '',
+      id_user: '',
+      id_client: '',
     }
   },
   validations () {
     return {
-      firstname: { required, $autoDirty: true  },
+      firstname: { required, $autoDirty: true },
+      username: { required, $autoDirty: true  },
       lastname: { required, $autoDirty: true  },
       email: { required, email, $autoDirty: true  },
-      password: { required, minLength: minLength(8), maxLength: maxLength(10), $autoDirty: true  },
-      password_confirm: { required, sameAs: sameAs(this.password), $autoDirty: true  },
+      password: { minLength: minLength(8), maxLength: maxLength(10), $autoDirty: true  },
+      password_confirm: { sameAs: sameAs(this.password), $autoDirty: true  },
       date_birth: { required, validateAge, $autoDirty: true  },
-      type_document: { required, $autoDirty: true },
       document: { required, validateDoc, numeric, $autoDirty: true },
       address: { required, $autoDirty: true },
       phone: { required, validatePhone, numeric, $autoDirty: true },
     }
   },
+
   mounted() {
     //Todo : llamar al backend y guardar los tipos de documentos en type_document en un array
-
-    
+    fetch('http://localhost:8000/roro/iddocument/')
+    .then(response => response.json())
+    .then(data => {
+      this.type_document = data
+    })
+    this.$swal.fire({
+      title: 'Espere un momento',
+      html: 'estamos cargando el sistema.',
+      allowOutsideClick: false,
+      didOpen: () => {
+        this.$swal.showLoading()
+      }
+    });
+    // guardar los datos del usuario en la data
+    this.getUser(this.$route.params.id)
+    .then(user => {
+      this.id_user = user.id
+      this.firstname = user.first_name
+      this.lastname = user.last_name
+      this.email = user.email
+      this.id_role = user.id_role
+      this.username = user.username
+      this.id_role = user.id_role
+      if(user.id_role === 2){
+        this.getClient(user.id)
+        .then(client => {
+          this.date_birth = client.born_date
+          this.type_selected = client.id_document
+          this.document = client.num_document
+          this.address = client.address
+          this.phone = client.phone_number
+          this.id_client = client.id
+        })
+      } this.$swal.close()
+    })
   },
   methods: {
-    ...mapActions(useUsers, ['verifyCaptcha, registerUser']),
-    ...mapActions(useClients, ['registerClient']),
+    ...mapActions(useUsers, ['updateUser', 'getUser']),
+    ...mapActions(useClients, ['updateClient', 'getClient']),
     regresar(){
-      this.$router.push('/')
+      this.$router.go(-1)
     },
     async submit () {
-      console.log(this.email);
       const valid = await this.v_errors.$validate()
       if (valid) {
-        if (this.captchaVerified) {
-          this.registerUser({
-            firstname: this.firstname,
-            lastname: this.lastname,
-            email: this.email,
-            password: this.password,
-            date_birth: this.date_birth,
-            type_document: this.type_document,
-            document: this.document,
+        var user = {
+          id: this.id_user,
+          first_name: this.firstname,
+          last_name: this.lastname,
+          email: this.email,
+          id_role: this.id_role,
+          username: this.username,
+        }
+        if (this.password) user.password = this.password
+        await this.updateUser(user)
+        if (this.id_role == 2) {
+          await this.updateClient({
+            id: this.id_client,
+            born_date: this.date_birth.split('/').reverse().join('-'),
+            is_author : false,
+            num_document: this.document,
             address: this.address,
-            phone: this.phone,
-          })
-          this.registerClient({
-            firstname: this.firstname,
-            lastname: this.lastname,
-            email: this.email,
-            password: this.password,
-            date_birth: this.date_birth,
-            type_document: this.type_document,
-            document: this.document,
-            address: this.address,
-            phone: this.phone,
-          })
-          this.$router.push('/')
-        } else {
-          this.$refs.vueRecaptcha.reset()
-          this.$swal({
-            title: 'Error',
-            text: 'Por favor verifica que no eres un robot',
-            type: 'error',
-            confirmButtonText: 'Ok'
+            phone_number: this.phone,
+            id_document: parseInt(this.type_selected),
+            id_user: this.id_user,
           })
         }
         this.$swal({
-          title: '¡Registro exitoso!',
-          text: 'Ahora puedes iniciar sesión.',
+          title: '¡Exito!',
+          text: 'El usuario fue modificado exitosamente.',
           icon: 'success',
           button: 'Ok'
         })
@@ -238,24 +271,10 @@ export default {
           title: 'Error',
           text: 'Por favor, revise los campos en rojo',
           icon: 'error',
-          confirmButtonText: 'Ok'
+          confirmButtonText: 'Ah bueno'
         })
       }
-    },
-    recaptchaVerified(response) {
-      this.verifyCaptcha({'g-recaptcha-response': response})
-      .then(() => this.captchaVerified = true)
-      .catch(() => {
-        this.$swal('Error', 'Reintente la verificacion de captcha', 'error')
-        this.recaptchaExpired()
-      })
-    },
-    recaptchaExpired() {
-      this.$refs.vueRecaptcha.reset();
-    },
-    recaptchaFailed() {
-      this.$swal('Error', 'Reintente la verificacion de captcha', 'error')
-    },
+    }
   }
 }
 </script>
