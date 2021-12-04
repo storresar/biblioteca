@@ -5,6 +5,7 @@ class documentSerializer(serializers.ModelSerializer):
     class Meta():
         model = document
         fields = '__all__'
+
 class lecturesSerializer(serializers.ModelSerializer):
     class Meta():
         model = lectures

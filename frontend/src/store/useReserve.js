@@ -26,11 +26,34 @@ const crudReservations = defineStore('resevations', {
                 this.resevations = data
             } else throw new Error("Error en el servidor, intentelo mas tarde")
         },
+        async searchReservations(id1,id2){
+            this.resevations = undefined
+            const response = await fetch(`${apiUrl}reservations/?id_document=${id1}&id_client=${id2}`)
+            const data = await response.json()
+            console.log(data)
+            if (response.ok) {
+                this.resevations = data
+            } else throw new Error("Error en el servidor, intentelo mas tarde")
+        },
         async getResevation(id) {
             const response = await fetch(`${apiUrl}reservations/${id}/`)
             const data = await response.json()
             if (response.ok) {
                 this.resevation = data
+            } else throw new Error("Error en el servidor, intentelo mas tarde")
+        },
+        async getP_reserve(id) {
+            const response = await fetch(`${apiUrl}p_reserve/?id_reserve=${id}`)
+            const data = await response.json()
+            if (response.ok) {
+                this.resevation = data[0]
+            } else throw new Error("Error en el servidor, intentelo mas tarde")
+        },
+        async getV_reserve(id) {
+            const response = await fetch(`${apiUrl}v_reserve/?id_reserve=${id}`)
+            const data = await response.json()
+            if (response.ok) {
+                this.resevation = data[0]
             } else throw new Error("Error en el servidor, intentelo mas tarde")
         },
         async createResevation(resevation) {
@@ -43,7 +66,7 @@ const crudReservations = defineStore('resevations', {
             })
             const data = await response.json()
             if (response.ok) {
-                this.getResevation(data)
+                this.resevation = data
             } else throw new Error("Error en el servidor, intentelo mas tarde")
 
         },

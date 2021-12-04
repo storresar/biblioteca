@@ -21,6 +21,11 @@ const routes = [
         path: 'myReserves',
         component: () => import(/* webpackChunkName: "about" */ '../views/client/MyReserves.vue'),
       },
+      {
+        path: 'myDocs',
+        component: () => import(/* webpackChunkName: "about" */ '@/views/client/author/MyListDocument.vue'),
+      }
+      ,
     ],
   },
   {

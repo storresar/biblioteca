@@ -8,7 +8,6 @@ router.register(r'p_reserve',p_reserveViewSet)
 router.register(r'v_reserve',v_reserveViewSet)
 
 urlpatterns = [
-    url(r'^api/(?P<id_client>.+)/$', reservationViewSet.as_view({'get': 'list'})),
 ]
 
 urlpatterns += router.urls
