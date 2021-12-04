@@ -6,6 +6,9 @@ const crudDocuments = defineStore('documents', {
     state: () => ({
         documents: undefined,
         document: undefined,
+        book: undefined,
+        lecture : undefined,
+        scientific : undefined,
     }),
     actions: {
         updateDocuments(documents) {
@@ -23,7 +26,45 @@ const crudDocuments = defineStore('documents', {
             const response = await fetch(`${apiUrl}documents/${id}/`)
             const data = await response.json()
             if (response.ok) {
-                this.client = data
+                this.document = data
+            } else throw new Error("Error en el servidor, intentelo mas tarde")
+        },
+        async getTypeDocuments(id){
+            const response = await fetch(`${apiUrl}documents/?state=${id}`)
+            const data = await response.json()
+            if (response.ok) {
+                this.documents = data
+            } else throw new Error("Error en el servidor, intentelo mas tarde")
+        },
+        async getMyDocuments(id) {
+            const response = await fetch(`${apiUrl}documents/?id_user=${id}`)
+            const data = await response.json()
+            if (response.ok) {
+                this.documents = data
+            } else throw new Error("Error en el servidor, intentelo mas tarde")
+        },
+        async getBook(id){
+            const response = await fetch(`${apiUrl}book/?id_doc=${id}`)
+            const data = await response.json()
+            console.log(data)
+            if (response.ok) {
+                this.book = data[0]
+            } else throw new Error("Error en el servidor, intentelo mas tarde")
+        },
+        async getLecture(id){
+            const response = await fetch(`${apiUrl}lectures/?id_doc=${id}`)
+            const data = await response.json()
+            console.log(data)
+            if (response.ok) {
+                this.lecture = data[0]
+            } else throw new Error("Error en el servidor, intentelo mas tarde")
+        },
+        async getScientific(id){
+            const response = await fetch(`${apiUrl}scientific/?id_doc=${id}`)
+            const data = await response.json()
+            console.log(data)
+            if (response.ok) {
+                this.scientific = data[0]
             } else throw new Error("Error en el servidor, intentelo mas tarde")
         },
         async createDocument(client) {

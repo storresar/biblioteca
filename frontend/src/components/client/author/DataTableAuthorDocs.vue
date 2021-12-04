@@ -22,10 +22,10 @@
                         Cantidad virtual
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        RESERVAR
+                        PUBLICAR
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        RESERVAR
+                        EDITAR
                     </th>
                     </tr>
                 </thead>
@@ -55,13 +55,13 @@
                         <div class="text-sm text-gray-500">{{doc.virtual_stock}}</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <button v-on:click="reserveDocumentPhysic(doc.id,doc.physical_stock)" class="bg-red-150 hover:bg-red-450 text-white font-bold py-2 px-4 rounded">
-                            RESERVA FISICA
+                        <button v-on:click="reserveDocumentPhysic(doc.id)" class="bg-red-150 hover:bg-red-450 text-white font-bold py-2 px-4 rounded">
+                            PUBLICAR
                         </button>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <button v-on:click="reserveDocumentVirtual(doc.id,doc.virtual_stock)" class="bg-red-150 hover:bg-red-450 text-white font-bold py-2 px-4 rounded">
-                            RESERVA VIRTUAL
+                        <button v-on:click="reserveDocumentVirtual(doc.id)" class="bg-red-150 hover:bg-red-450 text-white font-bold py-2 px-4 rounded">
+                            EDITAR
                         </button>
                     </td>
                     </tr>                        
@@ -123,71 +123,29 @@ import useClients from "@/store/useClients.js"
 export default {
     methods:{
          ...mapActions(useReserve, ['createResevation']),
-        async reserveDocumentPhysic(id_document, cantidad){
-            if(cantidad > 0){
-            console.log(id_document)
+        async reserveDocumentPhysic(id_document){
             const store = useClients()
-            const reservations = useReserve()
-            this.$swal.fire({
-                title: 'Espere un momento',
-                html: 'Estamos realizando la transacion',
-                allowOutsideClick: false,
-                didOpen: () => {
-                    this.$swal.showLoading()
-                }
-            });
-            await store.getClient(window.localStorage.getItem('userId'));
-            await reservations.searchReservations(id_document,store.client.id)
-            const reser = computed(() => reservations.resevations)
-            console.log(reser.value.length)
-            if (reser.value.length == 0){
-                await this.createResevation({
-                    id_document: id_document,
-                    id_client: store.client.id,
-                    id_type_stock: 1
-                })
-                this.$swal.close()
-            }else{
-                this.$swal('Error', 'Ya tiene reservas con este título', 'error')
-            }
-            }else{
-                this.$swal('Error', 'No hay unidades disponibles', 'error')
-            }
+            await store.getClient(window.localStorage.getItem('userId'));	
+            await this.createResevation({
+                id_document: id_document,
+                id_client: store.client.id,
+                id_type_stock: 1
+            })
         },
-        async reserveDocumentVirtual(id_document, cantidad){
-            if (cantidad > 0){
-                const store = useClients()
-                const reservations = useReserve()
-                this.$swal.fire({
-                    title: 'Espere un momento',
-                    html: 'Estamos realizando la transacion',
-                    allowOutsideClick: false,
-                    didOpen: () => {
-                        this.$swal.showLoading()
-                    }
-                });
-                await store.getClient(window.localStorage.getItem('userId'));
-                await reservations.searchReservations(id_document,store.client.id)
-                const reser = computed(() => reservations.resevations)
-                console.log(reser.value.length)
-                if (reser.value.length == 0){	
-                    await this.createResevation({
-                        id_document: id_document,
-                        id_client: store.client.id,
-                        id_type_stock: 2
-                    })
-                }else{
-                    this.$swal('Error', 'Ya tiene reservas con este título', 'error')
-                }
-            }else{
-                this.$swal('Error', 'No hay unidades disponibles', 'error')
-            }
+        async reserveDocumentVirtual(id_document){
+            const store = useClients()
+            await store.getClient(window.localStorage.getItem('userId'));	
+            await this.createResevation({
+                id_document: id_document,
+                id_client: store.client.id,
+                id_type_stock: 2
+            })
         }
     },
     async setup() {
-         const store = useDoc()
-         await store.getDocuments()
-         const docs = computed(() => store.documents)
+        const store = useDoc()
+        await store.getMyDocuments(window.localStorage.getItem('userId'))
+        const docs = computed(() => store.documents)
         const nPages = 8
         const begin = ref(0)
         const end = ref(nPages)

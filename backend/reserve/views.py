@@ -6,6 +6,7 @@ from .models import reservation,p_reserve,v_reserve
 from documents.models import document
 from datetime import datetime,timedelta,date
 from django.shortcuts import get_object_or_404
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 # Create your views here.
@@ -13,14 +14,9 @@ from django.shortcuts import get_object_or_404
 class reservationViewSet(viewsets.ModelViewSet):
     queryset = reservation.objects.all()
     serializer_class = reservationSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['id_client', 'id_document']
 
-    def get_queryset(self):
-        id_client = self.request.query_params.get('id_client')
-        print(id_client)
-        if(id_client == None):
-            return reservation.objects.all()
-        else:
-            return reservation.objects.filter(id_client=id_client)
 
     def create(self, request, *args, **kwargs):
         if 'data._mutable' in request.data : request.data._mutable = True
@@ -79,7 +75,11 @@ class reservationViewSet(viewsets.ModelViewSet):
 class p_reserveViewSet(viewsets.ModelViewSet):
     queryset = p_reserve.objects.all()
     serializer_class = p_reserveSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['id_reserve']
 
 class v_reserveViewSet(viewsets.ModelViewSet):
     queryset = v_reserve.objects.all()
     serializer_class = v_reserveSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['id_reserve']

@@ -13,7 +13,10 @@
                         Tipo de reserva:
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Detalles
+                        Detalles reserva
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Abrir (Documento)
                     </th>
                     </tr>
                 </thead>
@@ -32,11 +35,17 @@
                         <div v-if="doc.id_type_stock == 1" class="text-sm text-gray-500">FISICA</div>
                         <div v-if="doc.id_type_stock == 2" class="text-sm text-gray-500">VIRTUAL</div>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <button v-on:click="reserveDocumentPhysic(doc.id)" class="bg-red-150 hover:bg-red-450 text-white font-bold py-2 px-4 rounded">
+                    <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                        <button v-on:click="visualizarInfo(doc.id, doc.id_type_stock)" class="bg-red-150 hover:bg-red-450 text-white font-bold py-2 px-4 rounded">
                             VER DETALLES
                         </button>
                     </td>
+                    <td @click="infoDoc(doc.id_document)"  class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                        <button class="bg-red-150 hover:bg-red-450 text-white font-bold py-2 px-4 rounded">
+                            VISUALIZAR
+                        </button>
+                    </td>
+                    
                     </tr>                        
                 </tbody>
                 </table>
@@ -90,8 +99,51 @@
 <script>
 import useReserve from '@/store/useReserve.js'
 import useClients from "@/store/useClients.js"
+import useDoc from "@/store/useDoc.js"
+import { openModal } from "jenesius-vue-modal";
+import InfoP from '@/components/client/InfoP.vue'
+import InfoV from '@/components/client/InfoV.vue'
+import ModalDoc from '@/components/client/ModalDoc.vue'
 import { computed,ref } from 'vue'
     export default {
+        methods: {
+            async visualizarInfo(id, type){
+                if(type == 1){
+                    const store = useReserve()
+                    await store.getP_reserve(id)
+                    const reserve = computed(() => store.resevation)
+                    console.log(reserve.value)
+                    openModal(InfoP,{info: reserve.value})
+                }else{
+                    const store = useReserve()
+                    await store.getV_reserve(id)
+                    const reserve = computed(() => store.resevation)
+                    console.log(reserve.value)
+                    openModal(InfoV,{info: reserve.value})
+                }
+            },
+            async infoDoc(id_doc){
+                const store = useDoc()
+                await store.getDocument(id_doc)
+                const doc = computed(() => store.document)
+                if (doc.value.id_type_doc == 1){
+                    await store.getBook(id_doc)
+                    const book = computed(() => store.book)
+                    console.log(book.value)
+                    openModal(ModalDoc, {info: doc.value,book: book.value,lecture: undefined,article: undefined})
+                } else if (doc.value.id_type_doc == 2){
+                    await store.getLecture(id_doc)
+                    const lecture = computed(() => store.lecture)
+                    console.log(lecture.value)
+                    openModal(ModalDoc, {info: doc.value,book: undefined,lecture: lecture.value,article: undefined})
+                } else if (doc.value.id_type_doc == 2){
+                    await store.getScientific(id_doc)
+                    const article = computed(() => store.scientific)
+                    console.log(article.value)
+                    openModal(ModalDoc, {info: doc.value,book: undefined, lecture: undefined,article: article.value})
+                }
+            }
+        },
         async setup() {
         const storeclients = useClients()
         await storeclients.getClient(window.localStorage.getItem('userId'));

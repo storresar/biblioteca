@@ -3,11 +3,30 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from .serializers import documentSerializer,lecturesSerializer,bookSerializer,scientific_articleSerializer,audit_documentsSerializer
 from .models import document,lectures,book,scientific_article,audit_documents
+from users.models import client,author,author_request
+from django.shortcuts import get_object_or_404
+from django_filters.rest_framework import DjangoFilterBackend
 
 # Create your views here.
+
 class documentViewSet(viewsets.ModelViewSet):
     queryset = document.objects.all()
     serializer_class = documentSerializer
+
+    def get_queryset(self):
+        id_author = self.request.query_params.get('id_user')
+        state = self.request.query_params.get('state')
+        print(id_author)
+        if(id_author == None and state == None):
+            return document.objects.all()
+        else:
+            if (id_author):
+                id = get_object_or_404(client.objects.filter(id_user=id_author))
+                id = get_object_or_404(author_request.objects.filter(id_client=id.id))
+                id = get_object_or_404(author.objects.filter(id_request=id.id))
+                return document.objects.filter(id_author=id.id)
+            else:
+                return document.objects.filter(state=state)
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -48,14 +67,20 @@ class documentViewSet(viewsets.ModelViewSet):
 class lecturesViewSet(viewsets.ModelViewSet):
     queryset = lectures.objects.all()
     serializer_class = lecturesSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['id_doc']
 
 class bookViewSet(viewsets.ModelViewSet):
     queryset = book.objects.all()
     serializer_class = bookSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['id_doc']
 
 class scientific_articleViewSet(viewsets.ModelViewSet):
     queryset = scientific_article.objects.all()
     serializer_class = scientific_articleSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['id_doc']
 
 class audit_documentsViewSet(viewsets.ModelViewSet):
     queryset = audit_documents.objects.all()
