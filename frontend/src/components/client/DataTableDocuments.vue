@@ -146,7 +146,7 @@ export default {
                     id_client: store.client.id,
                     id_type_stock: 1
                 })
-                this.$swal.close()
+                this.$swal('Reserva Exitosa', 'Felicidades la reserva fue exitosa', 'success')
             }else{
                 this.$swal('Error', 'Ya tiene reservas con este título', 'error')
             }
