@@ -95,7 +95,7 @@
 </template>
 
 <script>
-import { required, email, sameAs, numeric, minLength, maxLength } from '@vuelidate/validators'
+import { required, email, sameAs, numeric, minLength, maxLength, alpha } from '@vuelidate/validators'
 import useVuelidate from '@vuelidate/core'
 import vueRecaptcha from 'vue3-recaptcha2';
 import { mapActions } from 'pinia'
@@ -167,8 +167,8 @@ export default {
   },
   validations () {
     return {
-      firstname: { required, $autoDirty: true  },
-      lastname: { required, $autoDirty: true  },
+      firstname: { required, alpha, $autoDirty: true  },
+      lastname: { required, alpha, $autoDirty: true  },
       email: { required, email, $autoDirty: true  },
       password: { required, minLength: minLength(8), maxLength: maxLength(10), $autoDirty: true  },
       password_confirm: { required, sameAs: sameAs(this.password), $autoDirty: true  },
