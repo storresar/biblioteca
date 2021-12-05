@@ -14,7 +14,7 @@
             </label>
             <input
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="username" type="text" placeholder="Título del documento" v-model="datos.nombre">
+            id="username" type="text" placeholder="Título del documento" v-model="datos.doc.title">
         </div>
         <div class="mb-4">
             <label class="block text-white text-sm font-bold" for="username">
@@ -22,7 +22,7 @@
             </label>
             <input
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="username" type="text" placeholder="Correo de contacto" v-model="datos.correo">
+            id="username" type="text" placeholder="Correo de contacto" v-model="datos.doc.email_contact">
         </div>
         <div class="mb-2">
             <label class="block text-white text-sm font-bold" for="username">
@@ -30,27 +30,27 @@
             </label>
             <input
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="username" type="text" placeholder="Número de contacto" v-model="datos.numero">
+            id="username" type="text" placeholder="Número de contacto" v-model="datos.doc.phone">
         </div>
         <div class="mb-2">
             <label class="block text-white text-sm font-bold" for="username">
                 Tipo de documento
             </label>
-            <select v-model="datos.tipo"
+            <select v-model.number="datos.doc.id_type_doc" disabled
                  class="block w-full bg-gray-200 border transition-colors duration-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                 <option value="1">Libro</option>
                 <option value="2">Lectura</option>
                 <option value="3">Articulo cientifico</option>
             </select>
         </div>
-        <div v-if="datos.tipo == '1'">
+        <div v-if="datos.doc.id_type_doc == 1">
             <div class="mb-2">
                 <label class="block text-white text-sm font-bold" for="username">
                    ISBN
                 </label>
                 <input
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="username" type="text" placeholder="Número de ISBN" v-model="datos.isbn">
+                id="username" type="text" placeholder="Número de ISBN" v-model="datos.book.isbn">
             </div>
             <div class="mb-2">
                 <label class="block text-white text-sm font-bold" for="username">
@@ -58,17 +58,17 @@
                 </label>
                 <input
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="username" type="number" placeholder="Número de páginas" v-model="datos.paginas">
+                id="username" type="number" placeholder="Número de páginas" v-model="datos.book.total_pages">
             </div>
         </div>
-        <div v-if="datos.tipo == '2'">
+        <div v-if="datos.doc.id_type_doc == 2">
             <div class="mb-2">
                 <label class="block text-white text-sm font-bold" for="username">
                    ISBN
                 </label>
                 <input
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="username" type="text" placeholder="Número de ISBN" v-model="datos.isbn">
+                id="username" type="text" placeholder="Número de ISBN" v-model="datos.article.isbn">
             </div>
             <div class="mb-2">
                 <label class="block text-white text-sm font-bold" for="username">
@@ -76,24 +76,24 @@
                 </label>
                 <input
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="username" type="text" placeholder="Nombre del congreso" v-model="datos.congreso">
+                id="username" type="text" placeholder="Nombre del congreso" v-model="datos.article.congreso">
             </div>
         </div>
-        <div v-if="datos.tipo == '3'">
+        <div v-if="datos.id_type_doc == 3">
             <div class="mb-2">
                 <label class="block text-white text-sm font-bold" for="username">
                    SSN
                 </label>
                 <input
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="username" type="text" placeholder="Nombre del SSN" v-model="datos.ssn">
+                id="username" type="text" placeholder="Nombre del SSN" v-model="datos.thesis.ssn">
             </div>
         </div>
         <div class="flex items-center justify-center  mb-2">
             <button
             class="bg-white hover:bg-red-50 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors duration-200 hover:text-white"
-            type="button" @click="guardar()">
-                GUARDAR
+            type="button" @click="actualizar()">
+                actualizar
             </button>
         </div>
     </form>
@@ -102,29 +102,26 @@
     </p>
     </div>
 </template>
+
 <script>
 import { closeModal } from "jenesius-vue-modal";
-import { computed,reactive, inject} from 'vue'
-import useClients from "@/store/useClients.js"
+import { reactive, inject} from 'vue'
 import useDoc from "@/store/useDoc.js"
 export default {
-    setup() {
+    props: {
+        documento: {
+            type: Object,
+        }
+    },
+    setup(props) {
         const swal = inject('$swal')
-        const datos = reactive({
-            nombre: "VACIO",
-            correo: "ejemplo@ejemplo.com",
-            numero: "VACIO",
-            isbn: "VACIO",
-            paginas: 0,
-            congreso: "VACIO",
-            ssn: "VACIO ",
-            tipo: '1',
-        });
+        const docs = useDoc()
+        const datos = reactive({...props.documento})
+        console.log(datos)
         const closeLoginModal = () => {
             closeModal();
         }; 
-        const guardar = async () => {
-            const store = useClients()
+        const actualizar = async () => {
             swal.fire({
                 title: 'Espere un momento',
                 html: 'Estamos realizando la transacion',
@@ -133,57 +130,34 @@ export default {
                     swal.showLoading()
                 }
             });
-            await store.getAuthor(window.localStorage.getItem('userId'))
-            const aut = computed(() => store.author)
-            const doc = {
-                title : datos.nombre,
-                state : 'C',
-                publication_date: '2001-10-1',
-                email_contact: datos.correo,
-                phone : datos.numero,
-                physical_stock: 0,
-                virtual_stock: 0,
-                id_author: aut.value.id,
-                id_type_doc: parseInt(datos.tipo)
-            }
-            const docs = useDoc()
-            docs.createDocument(doc)
+            const doc = {...datos.doc}
+            docs.updateDocument(doc)
             .then(() => {
-                    const nuevo = computed(() => docs.document)
-                    console.log(docs.document)
-                    if(datos.tipo == '1'){
-                        const book = {
-                            isbn: datos.isbn,
-                            total_pages: datos.paginas,
-                            id_doc: nuevo.value.id
-                        }
-                        docs.createBook(book)
-                    }else if (datos.tipo == '2'){
-                        const lecture = {
-                            isbn: datos.isbn,
-                            congress_name: datos.congreso,
-                            id_doc: nuevo.value.id
-                        }
-                        docs.createLecture(lecture)
-                    }else if (datos.tipo == '3'){
-                        const scientific = {
-                            ssn: datos.ssn,
-                            id_doc: nuevo.value.id
-                        }
+                    if(datos.tipo == 1){
+                        const book = {...datos.book}
+                        book.id_doc = datos.doc.id
+                        docs.updateDocument(book)
+                    }else if (datos.tipo == 2){
+                        const lecture = {...datos.lecture}
+                        lecture.id_doc = datos.doc.id
+                        docs.updateDocument(lecture)
+                    }else if (datos.tipo == 3){
+                        const scientific = {...datos.scientific}
+                        scientific.id_doc = datos.doc.id
                         docs.createScientific(scientific)
                     }
-                   swal.fire({title: 'Exito en registro', icon:'success'})
+                   swal.fire({title: 'Modificacion exitosa', icon:'success'})
                    closeModal();
                 })
             .catch(error => {
-            swal.fire({title: 'Error en el registo', icon:'error'})
+            swal.fire({title: 'Error modificando el usario', icon:'error'})
             console.error(error);
             })
         }
         return{
             closeLoginModal,
             datos,
-            guardar
+            actualizar
         }
     },
 }

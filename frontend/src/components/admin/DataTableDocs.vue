@@ -19,7 +19,7 @@
                         Estado
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Modificar
+                        Opciones    
                     </th>
                     </tr>
                 </thead>
@@ -45,7 +45,8 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <div class="flex justify-evenly align-middle">
-                            <button class="bg-red-150 hover:bg-red-450 text-white font-bold py-2 px-4 rounded">
+                            <button @click="modificarDoc(document)"
+                            class="bg-red-150 hover:bg-red-450 text-white font-bold py-2 px-4 rounded">
                                 MODIFICAR
                             </button>
                             <button @click="deleteDocument(document)"
@@ -109,8 +110,9 @@
 <script>
 import { computed, ref, inject } from 'vue'
 import useDoc from "@/store/useDoc.js"
-//import { openModal } from 'jenesius-vue-modal'
-//import ModalModificar from './ModalModificar.vue'
+import { openModal } from 'jenesius-vue-modal'
+import ModalEditDocVue from '@/components/client/author/ModalEditDoc.vue'
+
 export default {
     async setup() {
         const swal = inject('$swal')
@@ -125,6 +127,28 @@ export default {
             if (begin.value !== 0) begin.value -= nPages
             else begin.value = 0
             end.value = begin.value + nPages
+        }
+        const modificarDoc = async (doc) => {
+            let datos;
+            switch (doc.id_type_doc) {
+                case 1: {
+                    const book = await docs.getBook(doc.id);
+                    datos = { doc: { ...doc }, book: { ...book } };
+                    break;
+                }
+                case 2: {
+                    const article = await docs.getArticle(doc.id);
+                    datos = { doc: { ...doc }, article: { ...article } };
+                    break;
+                }
+                case 3: {
+                    const thesis = await docs.getThesis(doc.id);
+                    datos = { doc: { ...doc }, thesis: { ...thesis } };
+                    break;
+                }
+                default: break;
+            }
+            openModal(ModalEditDocVue, { documento: datos });
         }
         const deleteDocument = (doc) => {
             swal({
@@ -172,7 +196,7 @@ export default {
             docs: documentos.value,
             paginated, backPage, fowardPage,
             begin, end, deleteDocument,
-            estado,
+            estado, modificarDoc
         }
     },
 }
