@@ -49,7 +49,7 @@
 						</li>
 						<div v-if="!es_autor" class="w-60  font-normal text-sm">
 							<button v-on:click="createPetition"
-							class="ml-2 inline-flex items-center justify-center w-full h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-red-50 hover:bg-purple-accent-700">
+							class="ml-2 inline-flex items-center justify-center  h-12 px-4 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-red-50 hover:bg-purple-accent-700">
 								<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
 								</svg>
@@ -99,6 +99,7 @@
 <script>
 import { mapActions } from 'pinia'
 import useClients from "@/store/useClients.js"
+
     export default {
         data() {
             return {
@@ -115,13 +116,26 @@ import useClients from "@/store/useClients.js"
             },
 			async createPetition(){
 				const store = useClients()
+				this.$swal.fire({
+					title: 'Espere un momento',
+					html: 'Estamos realizando la transacion',
+					allowOutsideClick: false,
+					didOpen: () => {
+						this.$swal.showLoading()
+					}
+				});
 				await store.getClient(window.localStorage.getItem('userId'));
-				console.log(store.client.id)
-				const info = {
+				await store.getPetition(store.client.id);
+				if (store.petition == undefined){
+					const info = {
 					id_client: store.client.id,
 					state: 'E',
+					}
+					this.createPetitionAuthor(info)
+					.then(() => this.$swal('FELICIDADES', 'SE REALIZO LA PETICIÓN CORRECTAMENTE','success'))
+				}else{
+					this.$swal('Error', 'YA TIENE UNA PETICIÓN HECHA','error')
 				}
-				await this.createPetitionAuthor(info)
 			}
         },
         computed:{

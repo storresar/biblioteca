@@ -27,6 +27,9 @@
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         EDITAR
                     </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        ELIMINAR
+                    </th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -54,14 +57,31 @@
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-sm text-gray-500">{{doc.virtual_stock}}</div>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <button v-on:click="reserveDocumentPhysic(doc.id)" class="bg-red-150 hover:bg-red-450 text-white font-bold py-2 px-4 rounded">
+                    <div  v-if="doc.state == 'P'">
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <div class="text-sm text-gray-500">YA ESTÁ PUBLICADO</div>
+                        </td>
+                    </div>
+                    <div v-if="doc.state == 'E'">
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <div class="text-sm text-gray-500">ESTÁ EN REVISIÓN</div>
+                        </td>
+                    </div>
+                    <div v-if="doc.state == 'C'">
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <button v-on:click="publicar(doc)" class="bg-red-150 hover:bg-red-450 text-white font-bold py-2 px-4 rounded">
                             PUBLICAR
                         </button>
                     </td>
+                    </div>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <button v-on:click="reserveDocumentVirtual(doc.id)" class="bg-red-150 hover:bg-red-450 text-white font-bold py-2 px-4 rounded">
+                        <button  class="bg-red-150 hover:bg-red-450 text-white font-bold py-2 px-4 rounded">
                             EDITAR
+                        </button>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <button  class="bg-red-150 hover:bg-red-450 text-white font-bold py-2 px-4 rounded">
+                            ELIMINAR
                         </button>
                     </td>
                     </tr>                        
@@ -116,34 +136,13 @@
 </template>
 <script>
 import useDoc from "@/store/useDoc.js"
-import useReserve from '@/store/useReserve.js'
-import { computed,ref } from 'vue'
-import { mapActions } from 'pinia'
-import useClients from "@/store/useClients.js"
+import { computed,ref,inject } from 'vue'
 export default {
     methods:{
-         ...mapActions(useReserve, ['createResevation']),
-        async reserveDocumentPhysic(id_document){
-            const store = useClients()
-            await store.getClient(window.localStorage.getItem('userId'));	
-            await this.createResevation({
-                id_document: id_document,
-                id_client: store.client.id,
-                id_type_stock: 1
-            })
-        },
-        async reserveDocumentVirtual(id_document){
-            const store = useClients()
-            await store.getClient(window.localStorage.getItem('userId'));	
-            await this.createResevation({
-                id_document: id_document,
-                id_client: store.client.id,
-                id_type_stock: 2
-            })
-        }
     },
     async setup() {
         const store = useDoc()
+        const swal = inject('$swal')
         await store.getMyDocuments(window.localStorage.getItem('userId'))
         const docs = computed(() => store.documents)
         const nPages = 8
@@ -163,8 +162,39 @@ export default {
             }
             end.value = begin.value + nPages
         }
+        const publicar = async (documento) =>{
+            const nuevo = {
+                id: documento.id,
+                title: documento.title,
+                publication_date : documento.publication_date,
+                state: 'E',
+                email_contact : documento.email_contact,
+                phone : documento.phone,
+                physical_stock : documento.physical_stock,
+                virtual_stock : documento.virtual_stock,
+                id_author : documento.id_author,
+                id_type_doc: documento.id_type_doc
+            }
+            console.log(nuevo)
+           swal.fire({
+                title: 'Espere un momento',
+                html: 'Estamos realizando la transacion',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    swal.showLoading()
+                }
+            });
+            store.updateDocument(nuevo)
+            .then(() => swal('Petición Exitosa', 'Felicidades la peticón fue exitosa', 'success'))
+            .catch((e) => {
+                console.log(e.message)
+                console.error(e)
+                swal('Error', 'No se realizó la petición', 'error')
+                })
+        }
          return{
             documents: docs.value,
+            publicar,
             paginated, backPage, fowardPage,
             begin, end
          }

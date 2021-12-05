@@ -52,12 +52,38 @@ const crudDocuments = defineStore('documents', {
                 this.book = data[0]
             } else throw new Error("Error en el servidor, intentelo mas tarde")
         },
+        async createBook(book){
+            const response = await fetch(`${apiUrl}book/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(book),
+            })
+            const data = await response.json()
+            if (response.ok) {
+                this.book =  data
+            } else throw new Error("Error en el servidor, intentelo mas tarde")
+        },
         async getLecture(id){
             const response = await fetch(`${apiUrl}lectures/?id_doc=${id}`)
             const data = await response.json()
             console.log(data)
             if (response.ok) {
                 this.lecture = data[0]
+            } else throw new Error("Error en el servidor, intentelo mas tarde")
+        },
+        async createLecture(lecture){
+            const response = await fetch(`${apiUrl}lectures/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(lecture),
+            })
+            const data = await response.json()
+            if (response.ok) {
+                return data
             } else throw new Error("Error en el servidor, intentelo mas tarde")
         },
         async getScientific(id){
@@ -68,19 +94,33 @@ const crudDocuments = defineStore('documents', {
                 this.scientific = data[0]
             } else throw new Error("Error en el servidor, intentelo mas tarde")
         },
-        async createDocument(client) {
-            const response = await fetch(`${apiUrl}documents/`, {
+        async createScientific(scientific){
+            const response = await fetch(`${apiUrl}scientific/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(client),
+                body: JSON.stringify(scientific),
             })
             const data = await response.json()
             if (response.ok) {
                 return data
             } else throw new Error("Error en el servidor, intentelo mas tarde")
-
+        },
+        async createDocument(document) {
+            const response = await fetch(`${apiUrl}documents/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(document),
+            })
+            const data = await response.json()
+            console.log(data)
+            if (response.ok) {
+                this.document =  data
+                this.getDocuments()
+            } else throw new Error("Error en el servidor, intentelo mas tarde")
         },
         async updateDocument(document) {
             const response = await fetch(`${apiUrl}documents/${document.id}/`, {
@@ -91,8 +131,9 @@ const crudDocuments = defineStore('documents', {
                 body: JSON.stringify(document),
             })
             const data = await response.json()
+            console.log(data.value)
             if (response.ok) {
-                this.getClient(data)
+                this.getDocuments()
             } else throw new Error("Error en el servidor, intentelo mas tarde")
 
         },
