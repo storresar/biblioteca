@@ -19,6 +19,14 @@ const crudClient = defineStore('clients', {
             } else throw new Error("Error en el servidor, intentelo mas tarde")
 
         },
+        async getClientById(id) {
+            const response = await fetch(`${apiUrl}clients/${id}/`)
+            const data = await response.json()
+            if (response.ok) {
+                this.client = data
+                return data
+            } else throw new Error("Error en el servidor, intentelo mas tarde")
+        },
         async getClient(id) {
             const response = await fetch(`${apiUrl}clients/?id_user=${id}`)
             const data = await response.json()
