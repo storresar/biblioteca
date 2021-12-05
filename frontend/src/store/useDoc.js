@@ -78,12 +78,12 @@ const crudDocuments = defineStore('documents', {
             })
             const data = await response.json()
             if (response.ok) {
-                this.getClients(data)
+                return data
             } else throw new Error("Error en el servidor, intentelo mas tarde")
 
         },
         async updateDocument(document) {
-            const response = await fetch(`${apiUrl}documents/${document.id}`, {
+            const response = await fetch(`${apiUrl}documents/${document.id}/`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

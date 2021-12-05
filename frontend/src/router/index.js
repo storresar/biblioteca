@@ -52,6 +52,14 @@ const routes = [
         path: 'docslist',
         component: () => import(/* webpackChunkName: "about" */ '../views/admin/DocsListPage.vue'),
       },
+      {
+        path: 'authorlist',
+        component: () => import(/* webpackChunkName: "about" */ '../views/admin/AuthorRequests.vue'),
+      },
+      {
+        path: 'docsrequests',
+        component: () => import(/* webpackChunkName: "about" */ '../views/admin/DocsRequests.vue'),
+      },
     ]
   },
   {
