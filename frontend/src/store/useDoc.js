@@ -97,7 +97,7 @@ const crudDocuments = defineStore('documents', {
 
         },
         async deleteDocument(document) {
-            const response = await fetch(`${apiUrl}documents/${document.id}`, {
+            const response = await fetch(`${apiUrl}documents/${document.id}/`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -105,7 +105,7 @@ const crudDocuments = defineStore('documents', {
             })
             if (!response.ok) {
                 throw new Error("Error en el servidor, intentelo mas tarde")
-            }
+            } this.getDocuments()
         },
         async getAudit(){
             const response = await fetch(`${apiUrl}audit/`)

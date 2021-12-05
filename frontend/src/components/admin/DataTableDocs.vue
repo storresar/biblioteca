@@ -7,7 +7,7 @@
                 <thead class="bg-gray-50">
                     <tr>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Titulo
+                        Título
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Fecha de publicación
@@ -24,29 +24,36 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                    <tr v-for="doc in paginated" :key="doc">
+                    <tr v-for="document in paginated" :key="document.id">
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="flex items-center">
                         <div class="ml-4">
                             <div class="text-sm font-medium text-gray-900">
-                            {{doc.title}}
+                            {{document.title}}
                             </div>
                         </div>
                         </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-500">{{doc.publication_date}}</div>
+                        <div class="text-sm text-gray-500">{{document.publication_date}}</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-500">{{doc.id_author}}</div>
+                        <div class="text-sm text-gray-500">{{document.id_author}}</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-500">{{doc.state}}</div>
+                        <div class="text-sm text-gray-500">{{estado(document.state)}}</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <button class="bg-red-150 hover:bg-red-450 text-white font-bold py-2 px-4 rounded">
-                            MODIFICAR
-                        </button>
+                        <div class="flex justify-evenly align-middle">
+                            <button class="bg-red-150 hover:bg-red-450 text-white font-bold py-2 px-4 rounded">
+                                MODIFICAR
+                            </button>
+                            <button @click="deleteDocument(document)"
+                            class="bg-red-150 hover:bg-red-450 text-white font-bold py-2 px-4 rounded">
+                                ELIMINAR
+                            </button>
+        
+                        </div>
                     </td>
                     </tr>                        
                 </tbody>
@@ -100,15 +107,15 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue'
+import { computed, ref, inject } from 'vue'
 import useDoc from "@/store/useDoc.js"
 //import { openModal } from 'jenesius-vue-modal'
 //import ModalModificar from './ModalModificar.vue'
 export default {
     async setup() {
+        const swal = inject('$swal')
         const docs = useDoc()
         await docs.getDocuments()
-        console.log(docs.docs)
         const documentos = computed(() => docs.documents)
         const nPages = 8
         const begin = ref(0)
@@ -118,6 +125,40 @@ export default {
             if (begin.value !== 0) begin.value -= nPages
             else begin.value = 0
             end.value = begin.value + nPages
+        }
+        const deleteDocument = (doc) => {
+            swal({
+                title: '¿Estás seguro?',
+                text: 'Esta acción no se puede deshacer',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Si, eliminar',
+                cancelButtonText: 'No, cancelar',
+            })
+            .then(async (result) => {
+                if (result.isConfirmed) {
+                    await docs.deleteDocument(doc)
+                    await docs.getDocuments()
+                    swal('Eliminado', 'El documento ha sido eliminado', 'success')
+                } else if (result.isCancelled) {
+                    swal('Cancelado', 'El documento no ha sido eliminado', 'error')
+                }
+            }).catch(err => {
+                console.log(err)
+                swal('Error', 'El documento no ha sido eliminado', 'error')
+            })
+        }
+        
+        const estado = (state) => {
+            switch(state) {
+                case 'P':
+                    return 'Publicado'
+                case 'E':
+                    return 'En espera'
+                case 'R':
+                    return 'Rechazado'
+                default: return 'Desconocido' 
+            }
         }
         const fowardPage = () => {
             if (begin.value >= 0 && begin.value+nPages <= documentos.value.length) {
@@ -130,7 +171,8 @@ export default {
         return {
             docs: documentos.value,
             paginated, backPage, fowardPage,
-            begin, end,
+            begin, end, deleteDocument,
+            estado,
         }
     },
 }
