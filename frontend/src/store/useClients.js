@@ -6,6 +6,8 @@ const crudClient = defineStore('clients', {
     state: () => ({
         clients: undefined,
         client: undefined,
+        author: undefined,
+        petition: undefined,
     }),
     actions: {
         updateClients(clients) {
@@ -32,6 +34,13 @@ const crudClient = defineStore('clients', {
             const data = await response.json()
             if (response.ok) {
                 this.client = data[0]
+            } else throw new Error("Error en el servidor, intentelo mas tarde")
+        },
+        async getAuthor(id) {
+            const response = await fetch(`${apiUrl}author/?id_user=${id}`)
+            const data = await response.json()
+            if (response.ok) {
+                this.author = data[0]
                 return data[0]
             } else throw new Error("Error en el servidor, intentelo mas tarde")
         },
@@ -64,6 +73,13 @@ const crudClient = defineStore('clients', {
                 console.log(data)
             } else throw new Error("Error en el servidor, intentelo mas tarde")
 
+        },
+        async getPetition(id){
+            const response = await fetch(`${apiUrl}author-request/?id_client=${id}`)
+            const data = await response.json()
+            if (response.ok) {
+                this.petition = data[0]
+            } else throw new Error("Error en el servidor, intentelo mas tarde")
         },
         async updateClient(client) {
             const response = await fetch(`${apiUrl}clients/${client.id}/`, {

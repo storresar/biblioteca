@@ -14,7 +14,7 @@
             </label>
             <input
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="username" type="text" placeholder="Título del documento" v-model="titulo">
+            id="username" type="text" placeholder="Título del documento" v-model="datos.nombre">
         </div>
         <div class="mb-4">
             <label class="block text-white text-sm font-bold" for="username">
@@ -22,7 +22,7 @@
             </label>
             <input
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="username" type="text" placeholder="Correo de contacto" v-model="email">
+            id="username" type="text" placeholder="Correo de contacto" v-model="datos.correo">
         </div>
         <div class="mb-2">
             <label class="block text-white text-sm font-bold" for="username">
@@ -30,27 +30,27 @@
             </label>
             <input
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="username" type="text" placeholder="Número de contacto" v-model="numero">
+            id="username" type="text" placeholder="Número de contacto" v-model="datos.numero">
         </div>
         <div class="mb-2">
             <label class="block text-white text-sm font-bold" for="username">
                 Tipo de documento
             </label>
-            <select v-model="tipo"
+            <select v-model="datos.tipo"
                  class="block w-full bg-gray-200 border transition-colors duration-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                 <option value="1">Libro</option>
                 <option value="2">Lectura</option>
                 <option value="3">Articulo cientifico</option>
             </select>
         </div>
-        <div v-if="tipo == 1">
+        <div v-if="datos.tipo == '1'">
             <div class="mb-2">
                 <label class="block text-white text-sm font-bold" for="username">
                    ISBN
                 </label>
                 <input
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="username" type="text" placeholder="Número de ISBN" v-model="isbn">
+                id="username" type="text" placeholder="Número de ISBN" v-model="datos.isbn">
             </div>
             <div class="mb-2">
                 <label class="block text-white text-sm font-bold" for="username">
@@ -58,17 +58,17 @@
                 </label>
                 <input
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="username" type="number" placeholder="Número de páginas" v-model="paginas">
+                id="username" type="number" placeholder="Número de páginas" v-model="datos.paginas">
             </div>
         </div>
-        <div v-if="tipo == 2">
+        <div v-if="datos.tipo == '2'">
             <div class="mb-2">
                 <label class="block text-white text-sm font-bold" for="username">
                    ISBN
                 </label>
                 <input
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="username" type="text" placeholder="Número de ISBN" v-model="isbn">
+                id="username" type="text" placeholder="Número de ISBN" v-model="datos.isbn">
             </div>
             <div class="mb-2">
                 <label class="block text-white text-sm font-bold" for="username">
@@ -76,23 +76,23 @@
                 </label>
                 <input
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="username" type="text" placeholder="Nombre del congreso" v-model="congreso">
+                id="username" type="text" placeholder="Nombre del congreso" v-model="datos.congreso">
             </div>
         </div>
-        <div v-if="tipo == 3">
+        <div v-if="datos.tipo == '3'">
             <div class="mb-2">
                 <label class="block text-white text-sm font-bold" for="username">
                    SSN
                 </label>
                 <input
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="username" type="text" placeholder="Nombre del SSN" v-model="ssn">
+                id="username" type="text" placeholder="Nombre del SSN" v-model="datos.ssn">
             </div>
         </div>
         <div class="flex items-center justify-center  mb-2">
             <button
             class="bg-white hover:bg-red-50 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors duration-200 hover:text-white"
-            type="button" @click="login">
+            type="button" @click="guardar()">
                 GUARDAR
             </button>
         </div>
@@ -104,17 +104,86 @@
 </template>
 <script>
 import { closeModal } from "jenesius-vue-modal";
-import { ref } from "vue";
-
+import { computed,reactive, inject} from 'vue'
+import useClients from "@/store/useClients.js"
+import useDoc from "@/store/useDoc.js"
 export default {
     setup() {
-        const tipo = ref("1");
+        const swal = inject('$swal')
+        const datos = reactive({
+            nombre: "VACIO",
+            correo: "ejemplo@ejemplo.com",
+            numero: "VACIO",
+            isbn: "VACIO",
+            paginas: 0,
+            congreso: "VACIO",
+            ssn: "VACIO ",
+            tipo: '1',
+        });
         const closeLoginModal = () => {
             closeModal();
-        };
+        }; 
+        const guardar = async () => {
+            const store = useClients()
+            swal.fire({
+                title: 'Espere un momento',
+                html: 'Estamos realizando la transacion',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    swal.showLoading()
+                }
+            });
+            await store.getAuthor(window.localStorage.getItem('userId'))
+            const aut = computed(() => store.author)
+            const doc = {
+                title : datos.nombre,
+                state : 'C',
+                publication_date: '2001-10-1',
+                email_contact: datos.correo,
+                phone : datos.numero,
+                physical_stock: 0,
+                virtual_stock: 0,
+                id_author: aut.value.id,
+                id_type_doc: parseInt(datos.tipo)
+            }
+            const docs = useDoc()
+            docs.createDocument(doc)
+            .then(() => {
+                    const nuevo = computed(() => docs.document)
+                    console.log(docs.document)
+                    if(datos.tipo == '1'){
+                        const book = {
+                            isbn: datos.isbn,
+                            total_pages: datos.paginas,
+                            id_doc: nuevo.value.id
+                        }
+                        docs.createBook(book)
+                    }else if (datos.tipo == '2'){
+                        const lecture = {
+                            isbn: datos.isbn,
+                            congress_name: datos.congreso,
+                            id_doc: nuevo.value.id
+                        }
+                        docs.createLecture(lecture)
+                    }else if (datos.tipo == '3'){
+                        const scientific = {
+                            ssn: datos.ssn,
+                            id_doc: nuevo.value.id
+                        }
+                        docs.createScientific(scientific)
+                    }
+                   swal.fire({title: 'Exito en registro', icon:'success'})
+                   closeModal();
+                })
+            .catch(error => {
+            swal.fire({title: 'Error en el registo', icon:'error'})
+            console.error(error);
+            })
+        }
         return{
             closeLoginModal,
-            tipo
+            datos,
+            guardar
         }
     },
 }

@@ -14,6 +14,7 @@ router.register(r'iddocument', idDocumentViewSet)
 urlpatterns = [
     path('token-auth/', CustomAuthToken.as_view()),
     url(r'^api/(?P<id_user>.+)/$', clientViewSet.as_view({'get': 'list'})),
+    url(r'^api/(?P<id_user>.+)/$', author_ViewSet.as_view({'get': 'list'})),
     path('verificar_captcha/', verificar_captcha),
 ]
 
