@@ -21,6 +21,11 @@ const routes = [
         path: 'myReserves',
         component: () => import(/* webpackChunkName: "about" */ '../views/client/MyReserves.vue'),
       },
+      {
+        path: 'myDocs',
+        component: () => import(/* webpackChunkName: "about" */ '@/views/client/author/MyListDocument.vue'),
+      }
+      ,
     ],
   },
   {
@@ -47,6 +52,14 @@ const routes = [
         path: 'docslist',
         component: () => import(/* webpackChunkName: "about" */ '../views/admin/DocsListPage.vue'),
       },
+      {
+        path: 'authorlist',
+        component: () => import(/* webpackChunkName: "about" */ '../views/admin/AuthorRequests.vue'),
+      },
+      {
+        path: 'docsrequests',
+        component: () => import(/* webpackChunkName: "about" */ '../views/admin/DocsRequests.vue'),
+      },
     ]
   },
   {
@@ -62,6 +75,11 @@ const routes = [
     path: '/registro_documento',
     name: 'RegistroD',
     component: () => import('../views/Registro_Documento.vue')
+  },
+  {
+    path: '/ver_perfil',
+    name: 'VerPerfil',
+    component: () => import('../views/VerPerfil.vue')
   }
 ]
 const router = createRouter({

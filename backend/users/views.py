@@ -8,6 +8,8 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from django.conf import settings
+from django.shortcuts import get_object_or_404
+from django_filters.rest_framework import DjangoFilterBackend
 import requests
 # Create your views here.
 
@@ -34,9 +36,25 @@ class clientViewSet(viewsets.ModelViewSet):
 class author_requestViewSet(viewsets.ModelViewSet):
     queryset =author_request.objects.all()
     serializer_class = author_requestSerialiazer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['id_client']
 class author_ViewSet(viewsets.ModelViewSet):
     queryset = author.objects.all()
     serializer_class = authorSerializer
+
+    def get_queryset(self):
+        id_user = self.request.query_params.get('id_user')
+        print(id_user)
+        if(id_user == None):
+            return author.objects.all()
+        else:
+            print('daskjdhsalkd')
+            id = get_object_or_404(client.objects.filter(id_user=id_user))
+            print(id)
+            print('daskjdhsalkd')
+            id = get_object_or_404(author_request.objects.filter(id_client=id.id))
+            return author.objects.filter(id_request=id)
+    
 class CustomAuthToken(ObtainAuthToken):
 
     def post(self, request, *args, **kwargs):

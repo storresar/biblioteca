@@ -7,45 +7,66 @@
                 <thead class="bg-gray-50">
                     <tr>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Fecha de reserva:
+                        Titulo
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Tipo de reserva:
+                        Fecha Publicacion
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Detalles reserva
+                        Correo
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Abrir (Documento)
+                        Opciones
                     </th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                    <tr v-for="doc in paginated" :key="doc">
+                    <tr v-for="docs in paginated" :key="docs.id">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="ml-4">
+                                <div class="text-sm font-medium text-gray-900">
+                                    {{ docs.title}}
+                                </div>
+                            </div>
+                        </div>
+                    </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="flex items-center">
                         <div class="ml-4">
                             <div class="text-sm font-medium text-gray-900">
-                            {{doc.reservation_date}}
+                            {{docs.publication_date}}
                             </div>
                         </div>
                         </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <div v-if="doc.id_type_stock == 1" class="text-sm text-gray-500">FISICA</div>
-                        <div v-if="doc.id_type_stock == 2" class="text-sm text-gray-500">VIRTUAL</div>
+                        <div class="text-sm text-gray-500">{{docs.email_contact}}</div>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                        <button v-on:click="visualizarInfo(doc.id, doc.id_type_stock)" class="bg-red-150 hover:bg-red-450 text-white font-bold py-2 px-4 rounded">
-                            VER DETALLES
-                        </button>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                          <Popper placement="left">
+                            <button>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-800 hover:text-gray-500 transition-colors duration-200" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                            <template #content>
+                                <div class=" flex flex-col gap-2 rounded-md py-2 px-4">
+                                    <button @click="aceptRequest(docs.id)"
+                                    class="px-4 py-2 text-white transition duration-200 rounded shadow-md bg-red-50 hover:bg-deep-purple-accent-100 hover:text-black focus:shadow-outline focus:outline-none">
+                                        Aceptar solicitud
+                                    </button>
+                                </div>
+                                <div class=" flex flex-col gap-2 rounded-md py-2 px-4">
+                                    <button @click="rejectRequest(docs.id)"
+                                    class="px-4 py-2 text-white transition duration-200 rounded shadow-md bg-red-50 hover:bg-deep-purple-accent-100 hover:text-black focus:shadow-outline focus:outline-none">
+                                        Rechazar solicitud
+                                    </button>
+                                </div>
+                            </template>
+                        </Popper>
+                        
                     </td>
-                    <td @click="infoDoc(doc.id_document)"  class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                        <button class="bg-red-150 hover:bg-red-450 text-white font-bold py-2 px-4 rounded">
-                            VISUALIZAR
-                        </button>
-                    </td>
-                    
                     </tr>                        
                 </tbody>
                 </table>
@@ -69,10 +90,10 @@
                     Mostrando
                     <span class="font-medium">{{begin}}</span>
                     hasta
-                    <span v-if="end < documents.length" class="font-medium">{{end}}</span>
-                    <span v-else class="font-medium">{{documents.length}}</span>
+                    <span v-if="end < data.length" class="font-medium">{{end}}</span>
+                    <span v-else class="font-medium">{{data.length}}</span>
                     de
-                    <span class="font-medium">{{documents.length}}</span>
+                    <span class="font-medium">{{data.length}}</span>
                     resultados
                 </p>
                 </div>
@@ -96,82 +117,88 @@
         </div>
     </div>
 </template>
+
 <script>
-import useReserve from '@/store/useReserve.js'
-import useClients from "@/store/useClients.js"
-import useDoc from "@/store/useDoc.js"
-import { openModal } from "jenesius-vue-modal";
-import InfoP from '@/components/client/InfoP.vue'
-import InfoV from '@/components/client/InfoV.vue'
-import ModalDoc from '@/components/client/ModalDoc.vue'
-import { computed,ref } from 'vue'
-    export default {
-        methods: {
-            async visualizarInfo(id, type){
-                if(type == 1){
-                    const store = useReserve()
-                    await store.getP_reserve(id)
-                    const reserve = computed(() => store.resevation)
-                    console.log(reserve.value)
-                    openModal(InfoP,{info: reserve.value})
-                }else{
-                    const store = useReserve()
-                    await store.getV_reserve(id)
-                    const reserve = computed(() => store.resevation)
-                    console.log(reserve.value)
-                    openModal(InfoV,{info: reserve.value})
-                }
-            },
-            async infoDoc(id_doc){
-                const store = useDoc()
-                await store.getDocument(id_doc)
-                const doc = computed(() => store.document)
-                if (doc.value.id_type_doc == 1){
-                    await store.getBook(id_doc)
-                    const book = computed(() => store.book)
-                    console.log(book.value)
-                    openModal(ModalDoc, {info: doc.value,book: book.value,lecture: undefined,article: undefined})
-                } else if (doc.value.id_type_doc == 2){
-                    await store.getLecture(id_doc)
-                    const lecture = computed(() => store.lecture)
-                    console.log(lecture.value)
-                    openModal(ModalDoc, {info: doc.value,book: undefined,lecture: lecture.value,article: undefined})
-                } else if (doc.value.id_type_doc == 2){
-                    await store.getScientific(id_doc)
-                    const article = computed(() => store.scientific)
-                    console.log(article.value)
-                    openModal(ModalDoc, {info: doc.value,book: undefined, lecture: undefined,article: article.value})
-                }
+import { computed, ref, inject, reactive } from 'vue'
+import useDoc from '@/store/useDoc.js'
+import Popper from "vue3-popper";
+export default {
+    components: {
+      Popper,
+    },
+    async setup() {
+        const swal = inject("$swal")
+        swal.fire({
+          title: 'Espere un momento',
+          html: 'estamos cargando la lista',
+          allowOutsideClick: false,
+          didOpen: () => {
+            swal.showLoading()
+          }
+        });
+        const data = reactive([])
+        const docs = useDoc()
+        await docs.getDocuments()
+
+        await docs.documents.forEach(document => {
+            if (document.state == "E") {
+                data.push(document)
             }
-        },
-        async setup() {
-        const storeclients = useClients()
-        await storeclients.getClient(window.localStorage.getItem('userId'));
-        const store = useReserve()
-        await store.getMyReservations(storeclients.client.id)
-        const docs = computed(() => store.resevations)
+        })
+
         const nPages = 8
         const begin = ref(0)
         const end = ref(nPages)
-        const paginated = computed(() => docs.value.slice(begin.value, end.value))
+        const paginated = computed(() => data.slice(begin.value, end.value))
         const backPage = () => {
             if (begin.value !== 0) begin.value -= nPages
             else begin.value = 0
             end.value = begin.value + nPages
         }
         const fowardPage = () => {
-            if (begin.value >= 0 && begin.value+nPages <= docs.value.length) {
+            if (begin.value >= 0 && begin.value+nPages <= data.length) {
                 begin.value += nPages
             } else{
                 begin.value = 0
             }
             end.value = begin.value + nPages
         }
-         return{
-            documents: docs.value,
+
+        const aceptRequest = async (id) => {
+            swal.fire({
+                title: 'Espere un momento',
+                html: 'estamos tratando la solicitud',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    swal.showLoading()
+                }
+            });
+            let doc = data.find(document => document.id == id)
+            doc.state = "P"
+            await docs.updateDocument(doc)
+            swal.fire("Exito", "La solicitud ha sido aceptada", "success")
+        }
+        const rejectRequest = async (id) => {
+            swal.fire({
+                title: 'Espere un momento',
+                html: 'estamos tramitando la solicitud',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    swal.showLoading()
+                }
+            })
+            let doc = data.find(document => document.id == id)
+            doc.state = "R"
+            await docs.updateDocument(doc)
+            swal.fire("Exito", "La solicitud ha sido rechazada", "success")
+        }
+        
+        swal.close()
+        return {
             paginated, backPage, fowardPage,
-            begin, end
-         }
-        }   
-    }
+            begin, end, aceptRequest, rejectRequest,
+            data,
+        }
+    },
+}
 </script>

@@ -86,6 +86,16 @@ const crudUser = defineStore('users', {
                 return data
             } else throw new Error("Error en el servidor, intentelo mas tarde")
         },
-    }
+        async getUserByDocumentId(document) {
+            const req2 = await fetch(`${apiUrl}clients/${document.id_author}/`)
+            if (req2.ok) {
+                const data2 = await req2.json()
+                const req3 = await fetch(`${apiUrl}users/${data2.id_user}/`)
+                if (req3.ok) {
+                    return req3.json()
+                } else throw new Error("Error en el servidor, intentelo mas tarde")
+            } else throw new Error("Error en el servidor, intentelo mas tarde")
+        },        
+    },
 })
 export default crudUser

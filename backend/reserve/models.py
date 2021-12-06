@@ -10,8 +10,8 @@ class type_doc(models.Model):
 
 
 class reservation(models.Model):
-    id_document = models.ForeignKey(document, on_delete=models.DO_NOTHING)
-    id_client = models.ForeignKey(client, on_delete=models.DO_NOTHING)
+    id_document = models.ForeignKey(document, on_delete=models.CASCADE)
+    id_client = models.ForeignKey(client, on_delete=models.CASCADE)
     reservation_date = models.DateField(auto_now=True)
     id_type_stock = models.ForeignKey(type_doc,on_delete=models.DO_NOTHING)
 
@@ -19,8 +19,15 @@ class p_reserve(models.Model):
     id_reserve = models.ForeignKey(reservation, on_delete=models.CASCADE)
     limit_date = models.DateField(auto_now=False, auto_now_add=False)
 
+
+class licences(models.Model):
+    id_document = models.ForeignKey(document, on_delete=models.CASCADE)
+    licence = models.CharField(max_length=50)
+    available = models.IntegerField()
+
 class v_reserve(models.Model):
     id_reserve = models.ForeignKey(reservation, on_delete=models.CASCADE)
+    id_licence = models.ForeignKey(licences, on_delete=models.CASCADE)
     licence = models.CharField(max_length=50)
     due_Date = models.DateField(auto_now=False, auto_now_add=False)
     num_renovations = models.IntegerField()
