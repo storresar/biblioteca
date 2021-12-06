@@ -221,6 +221,7 @@ export default {
       if(user.id_role === 2){
         this.getClient(user.id)
         .then(client => {
+          console.log(client)
           this.date_birth = client.born_date
           this.type_selected = client.id_document
           this.document = client.num_document

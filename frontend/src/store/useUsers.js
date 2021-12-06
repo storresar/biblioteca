@@ -75,7 +75,7 @@ const crudUser = defineStore('users', {
             } else throw new Error("Error en el servidor, intentelo mas tarde")
         },
         async verifyCaptcha(captcha) {
-            const response = await fetch('https://rocky-basin-43749.herokuapp.com/api/verificar_captcha/', {
+            const response = await fetch(`${apiUrl}verificar_captcha/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

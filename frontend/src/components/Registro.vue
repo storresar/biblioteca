@@ -10,7 +10,7 @@
           <p v-if="v_errors.firstname.$error" class="text-sm text-red-150 m-2">Ingrese sus nombre.</p>
 
         </span>
-        <span class="w-full sm:w-1/2">
+        <span class="w-full sm:w-1/2 mb-2">
           <label for="lastname" class="block text-xs font-semibold text-gray-600 uppercase">Apellidos</label>
           <input id="lastname" type="text" name="lastname" placeholder="Doe" autocomplete="family-name" v-model="lastname"
           class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner"/>
@@ -18,6 +18,12 @@
 
         </span>
       </div>
+      <label for="documento" class="block text-xs font-semibold text-gray-600 uppercase ">Nombre de usuario</label>
+      <input type="text" name="documento" v-model="username"
+      class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
+      <p v-if="v_errors.username.$error" class="text-sm text-red-150 m-2">Ingrese un valor en este campo</p>
+
+
       <label for="email" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">E-mail</label>
       <input type="text" name="email" placeholder="john.doe@company.com" autocomplete="email" v-model="email"
       class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" />
@@ -44,9 +50,9 @@
       <div class="flex flex-col sm:flex-row justify-between gap-3 mt-2">
         <span class="w-full sm:w-1/3">
           <label for="tipo_documento" class="block text-xs font-semibold text-gray-600 uppercase">Tipo de documento</label>
-          <select v-model="type_document"
+          <select v-model.number="type_selected"
           class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 focus:outline-none focus:bg-gray-300 focus:shadow-inner">
-            <option v-for="item of options" :key="item" :value="item">{{item}}</option>
+            <option v-for="item of options" :key="item.id" :value="item.id">{{item.name_doc}}</option>
           </select>
         </span>
         <span class="w-full sm:w-2/3">
@@ -70,7 +76,7 @@
       <p v-if="v_errors.phone.$error" class="text-sm text-red-150 m-2">Número telefonico no válido</p>
 
       <div class="flex justify-center mt-2">
-        <vue-recaptcha siteKey="6Ld3Y-wcAAAAAJOH0wFvfqG53ob76ilO7B2TQHMZ"
+        <vue-recaptcha siteKey="6LfcUn8dAAAAAMY0DB1qPMEornsRMmb6uh970EAh"
         size="normal"
         theme="light"
         :tabindex="0"
@@ -156,24 +162,26 @@ export default {
       email: 'gaortega@unbosque.edu.co',
       password: 'Ronditas11',
       password_confirm: 'Ronditas11',
-      date_birth: '10/15/1999',
-      type_document: 'Cedula',
+      date_birth: '1999-10-15',
+      type_selected: 1,
       document: '1019152187',
       address: 'aKI',
       phone: '3212223755',
-      options: ['Cedula', 'Tarjeta de identidad'],
+      options: [{id:1, name_doc:"Cedula"}, {id:2, name_doc:"Tarjeta de identidad"}],
       captchaVerified: false,
+      username: 'quinterbell',
     }
   },
   validations () {
     return {
       firstname: { required, alpha, $autoDirty: true  },
+      username: { required, $autoDirty: true  },
       lastname: { required, alpha, $autoDirty: true  },
       email: { required, email, $autoDirty: true  },
       password: { required, minLength: minLength(8), maxLength: maxLength(10), $autoDirty: true  },
       password_confirm: { required, sameAs: sameAs(this.password), $autoDirty: true  },
       date_birth: { required, validateAge, $autoDirty: true  },
-      type_document: { required, $autoDirty: true },
+      type_selected: { required, $autoDirty: true },
       document: { required, validateDoc, numeric, $autoDirty: true },
       address: { required, $autoDirty: true },
       phone: { required, validatePhone, numeric, $autoDirty: true },
@@ -181,36 +189,53 @@ export default {
   },
   mounted() {
     //Todo : llamar al backend y guardar los tipos de documentos en type_document en un array
+    this.$swal.fire({
+      title: 'Espere un momento',
+      html: 'estamos cargando el sistema.',
+      allowOutsideClick: false,
+      didOpen: () => {
+        this.$swal.showLoading()
+      }
+    });
+    const apiUrl = process.env.NODE_ENV === 'production' ?
+    'https://doculib.herokuapp.com/roro/' : 'http://localhost:8000/roro/';
+    fetch(apiUrl + 'iddocument/')
+    .then(response => response.json())
+    .then(data => {
+      this.options = data
+      this.$swal.close()
+    })
 
     
   },
   methods: {
-    ...mapActions(useUsers, ['verifyCaptcha, registerUser']),
-    ...mapActions(useClients, ['registerClient']),
+    ...mapActions(useUsers, ['verifyCaptcha', 'createUser']),
+    ...mapActions(useClients, ['createClient']),
     regresar(){
       this.$router.push('/')
     },
     async submit () {
-      console.log(this.email);
       const valid = await this.v_errors.$validate()
       if (valid) {
         if (this.captchaVerified) {
-          this.registerUser({
+          const {id} = await this.createUser({
             first_name: this.firstname,
+            username: this.username,
             last_name: this.lastname,
             email: this.email,
             password: this.password,
-            type_document: this.type_document,
-            document: this.document,
-            address: this.address,
             phone: this.phone,
+            id_role: 2,
           })
-          this.registerClient({
-            born_date: this.date_birth,
-            type_document: this.type_document,
+          await this.createClient({
+            born_date: this.date_birth.split('/').reverse().join('-'),
+            is_author : false,
             num_document: this.document,
             address: this.address,
             phone_number: this.phone,
+            state: "D",
+            id_document: this.type_selected,
+            id_user: id,
           })
           this.$router.push('/')
         } else {
@@ -239,7 +264,9 @@ export default {
     },
     recaptchaVerified(response) {
       this.verifyCaptcha({'g-recaptcha-response': response})
-      .then(() => this.captchaVerified = true)
+      .then(() => {
+        this.captchaVerified = true
+      })
       .catch(() => {
         this.$swal('Error', 'Reintente la verificacion de captcha', 'error')
         this.recaptchaExpired()
