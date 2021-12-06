@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-eo_1*e7#f!y#4^!w2$v(^s39ns7-7*fh4t&p#t*#=s(-n^h)@&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['doculib.herokuapp.com', 'localhost', '127.0.0.1']
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
