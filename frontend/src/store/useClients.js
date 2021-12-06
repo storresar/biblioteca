@@ -35,6 +35,7 @@ const crudClient = defineStore('clients', {
             const data = await response.json()
             if (response.ok) {
                 this.client = data[0]
+                return data[0]
             } else throw new Error("Error en el servidor, intentelo mas tarde")
         },
         async getAuthor(id) {

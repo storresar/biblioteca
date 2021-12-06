@@ -51,63 +51,22 @@
             <div class="relative px-16 mx-auto max-w-7xl">
                 <h2 class="relative max-w-lg mt-5 mb-10 text-3xl font-semibold leading-tight lg:text-5xl text-white">DOCUMENTOS DESTACADOS</h2>
                 <div class="grid w-full grid-cols-2 gap-10 sm:grid-cols-3 lg:grid-cols-4">
-                    <div class="flex flex-col items-center justify-center col-span-1">
-                        <div class="relative p-5">
-                            <div class="absolute z-10 w-full h-full -mt-5 -ml-5 rounded-full rounded-tr-none bg-red-900"></div>
-                            <img class="relative z-20 w-full rounded-full" src="https://lh3.googleusercontent.com/proxy/Jl-z8lmXKXAAtvqw1E1wlr_LYgbw3oQFF-IAd-eQHuNI7FcUpcMhhoDEf-sKcCyIfWmuw86xXu2xN6Zv7mprF0cQC5DFNNU">
-                        </div>
-                        <div class="mt-3 space-y-2 text-center">
-                            <div class="space-y-1 text-xs font-normal leading-6 text-white">
-                                <h3>Nombre del documento:</h3>
-                                <h4>Fecha de publicación:</h4>
-                                <h4>Nombre del autor:</h4>
-                                <h5>Tipo de documento:</h5>
-                                <button class="bg-red-350 hover:bg-red-150 text-white font-bold py-1 px-3 border rounded">RESERVAR</button>
+                    <div v-for="item in lista" :key="item">
+                        <div class="flex flex-col items-center justify-center col-span-1">
+                            <div class="relative p-5">
+                                <div class="absolute z-10 w-full h-full -mt-5 -ml-5 rounded-full rounded-tr-none bg-red-900"></div>
+                                <img class="relative z-20 w-full rounded-full" src="libroImg.png" alt="LibroImg">
                             </div>
-                        </div>
-                    </div>
-                    <div class="flex flex-col items-center justify-center col-span-1">
-                        <div class="relative p-5">
-                            <div class="absolute z-10 w-full h-full -mt-5 -ml-5 rounded-full rounded-tr-none bg-red-900"></div>
-                            <img class="relative z-20 w-full rounded-full" src="https://lh3.googleusercontent.com/proxy/Jl-z8lmXKXAAtvqw1E1wlr_LYgbw3oQFF-IAd-eQHuNI7FcUpcMhhoDEf-sKcCyIfWmuw86xXu2xN6Zv7mprF0cQC5DFNNU">
-                        </div>
-                        <div class="mt-3 space-y-2 text-center">
-                            <div class="space-y-1 text-xs font-normal leading-6 text-white">
-                                <h3>Nombre del documento:</h3>
-                                <h4>Fecha de publicación:</h4>
-                                <h4>Nombre del autor:</h4>
-                                <h5>Tipo de documento:</h5>
-                                <button class="bg-red-350 hover:bg-red-150 text-white font-bold py-1 px-3 border rounded">RESERVAR</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex flex-col items-center justify-center col-span-1">
-                        <div class="relative p-5">
-                            <div class="absolute z-10 w-full h-full -mt-5 -ml-5 rounded-full rounded-tr-none bg-red-900"></div>
-                            <img class="relative z-20 w-full rounded-full" src="https://lh3.googleusercontent.com/proxy/Jl-z8lmXKXAAtvqw1E1wlr_LYgbw3oQFF-IAd-eQHuNI7FcUpcMhhoDEf-sKcCyIfWmuw86xXu2xN6Zv7mprF0cQC5DFNNU">
-                        </div>
-                        <div class="mt-3 space-y-2 text-center">
-                            <div class="space-y-1 text-xs font-normal leading-6 text-white">
-                                <h3>Nombre del documento:</h3>
-                                <h4>Fecha de publicación:</h4>
-                                <h4>Nombre del autor:</h4>
-                                <h5>Tipo de documento:</h5>
-                                <button class="bg-red-350 hover:bg-red-150 text-white font-bold py-1 px-3 border rounded">RESERVAR</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex flex-col items-center justify-center col-span-1">
-                        <div class="relative p-5">
-                            <div class="absolute z-10 w-full h-full -mt-5 -ml-5 rounded-full rounded-tr-none bg-red-900"></div>
-                            <img class="relative z-20 w-full rounded-full" src="https://lh3.googleusercontent.com/proxy/Jl-z8lmXKXAAtvqw1E1wlr_LYgbw3oQFF-IAd-eQHuNI7FcUpcMhhoDEf-sKcCyIfWmuw86xXu2xN6Zv7mprF0cQC5DFNNU">
-                        </div>
-                        <div class="mt-3 space-y-2 text-center">
-                            <div class="space-y-1 text-xs font-normal leading-6 text-white">
-                                <h3>Nombre del documento:</h3>
-                                <h4>Fecha de publicación:</h4>
-                                <h4>Nombre del autor:</h4>
-                                <h5>Tipo de documento:</h5>
-                                <button class="bg-red-350 hover:bg-red-150 text-white font-bold py-1 px-3 border rounded">RESERVAR</button>
+                            <div class="mt-3 space-y-2 text-center">
+                                <div class="space-y-1 text-xs font-normal leading-6 text-white">
+                                    <h3>Nombre del documento: {{ item.title }}</h3>
+                                    <h4>Fecha de publicación: {{ item.publication_date}}</h4>
+                                    <h4>Correo del autor: {{ item.email_contact }}</h4>
+                                    <h5 v-if="item.id_type_doc == 1">Tipo de documento: Libro</h5>
+                                    <h5 v-if="item.id_type_doc == 2">Tipo de documento: Lectura</h5>
+                                    <h5 v-if="item.id_type_doc == 3">Tipo de documento: Artículo científico</h5>
+                                    <button class="bg-red-350 hover:bg-red-150 text-white font-bold py-1 px-3 border rounded">RESERVAR</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -224,9 +183,26 @@
 <script>
 import Footer from "./Footer.vue";
 import Header from "./Header.vue"
-
+import { mapState, mapActions} from 'pinia'
+import useDoc from "@/store/useDoc.js"
 export default {
- 
+    data() {
+        return{
+            lista: []
+        }
+    },
+    computed: {
+        ...mapState(useDoc,['documents'])
+    },
+    methods: {
+        ...mapActions(useDoc,['getTypeDocuments'])
+    },
+    mounted() {
+        this.getTypeDocuments('P')
+        .then(() => {
+            this.lista = this.documents.slice(0, 3)
+        }) 
+    },
     components: {
         Footer,
         Header

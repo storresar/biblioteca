@@ -37,7 +37,7 @@
 
       
       <div class="flex flex-col sm:flex-row justify-between gap-3 mt-2">
-        <span class="w-full sm:w-/3">
+        <span class="w-full sm:w-2/3">
           <label for="tipo_documento" class="block text-xs font-semibold text-red-400 uppercase">Tipo de documento</label>
           <select v-model="type_selected" disabled="true"
           class="block w-full p-3 mt-2 text-black appearance-none bg-transparent focus:outline-none focus:bg-gray-300 focus:shadow-inner">
@@ -106,13 +106,6 @@ export default {
   
   mounted() {
     //Todo : llamar al backend y guardar los tipos de documentos en type_document en un array
-    const apiUrl = process.env.NODE_ENV === 'production' ?
-    'https://doculib.herokuapp.com/roro/' : 'http://localhost:8000/roro/';
-    fetch(apiUrl + 'iddocument/')
-    .then(response => response.json())
-    .then(data => {
-      this.type_document = data
-    })
     this.$swal.fire({
       title: 'Espere un momento',
       html: 'estamos cargando el sistema.',
@@ -121,6 +114,13 @@ export default {
         this.$swal.showLoading()
       }
     });
+    const apiUrl = process.env.NODE_ENV === 'production' ?
+    'https://doculib.herokuapp.com/roro/' : 'http://localhost:8000/roro/';
+    fetch(apiUrl + 'iddocument/')
+    .then(response => response.json())
+    .then(data => {
+      this.type_document = data
+    })
     // guardar los datos del usuario en la data
     this.getUser(localStorage.getItem('userId'))
     .then(user => {
@@ -140,8 +140,9 @@ export default {
           this.address = client.address
           this.phone = client.phone_number
           this.id_client = client.id
+          this.$swal.close()
         })
-      } this.$swal.close()
+      } else this.$swal.close()
     })
   },
   methods: {
