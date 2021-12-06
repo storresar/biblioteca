@@ -10,10 +10,10 @@
                         ID del Documento
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Tipo de Auditoria
+                        Tipo de Auditoría
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Fecha de Auditoria
+                        Fecha de Auditoría
                     </th>
                     </tr>
                 </thead>

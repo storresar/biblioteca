@@ -53,7 +53,7 @@
 
       <div class="flex flex-col sm:flex-row justify-between gap-3">
         <span class="w-full sm:w-2/3">
-          <label for="phone" class="block mt-2 text-xs font-semibold text-red-400 uppercase">Número telefonico</label>
+          <label for="phone" class="block mt-2 text-xs font-semibold text-red-400 uppercase">Número telefónico</label>
           <input type="text" name="phone" v-model="phone" disabled="true"
           class="block w-full p-3 mt-2 text-black bg-transparent appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" />
         </span>

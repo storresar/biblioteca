@@ -60,7 +60,7 @@
                     tracking-wider
                   "
                 >
-                  Cantidad Fisica
+                  Cantidad Física
                 </th>
                 <th
                   scope="col"
@@ -148,7 +148,7 @@
                     v-if="doc.id_type_doc == 3"
                     class="text-sm text-gray-500"
                   >
-                    Articulo cientifico
+                    Artículo científico
                   </div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">

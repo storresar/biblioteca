@@ -19,7 +19,7 @@
                     <path d="M5 0h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2 2 2 0 0 1-2 2H3a2 2 0 0 1-2-2h1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1H1a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v9a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1H3a2 2 0 0 1 2-2z"/>
                     <path d="M1 6v-.5a.5.5 0 0 1 1 0V6h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V9h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 2.5v.5H.5a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1H2v-.5a.5.5 0 0 0-1 0z"/>
                     </svg>
-                    Catalogo
+                    Catálogo
                 </li>
                 <li>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-newspaper" viewBox="0 0 16 16">
@@ -78,7 +78,7 @@
                         SOBRE NOSOTROS
                     </h2>
                     <p class="pt-4 pb-8 m-0 leading-7 text-gray-700 border-0 border-gray-300 sm:pr-12 xl:pr-32 lg:text-lg">
-                        Nosotros somos una librería reconocida a nivel nacional, nos destacamos por manejar diversos tipos de documentos como artículos, libros, etc. Además de esto manejamos el préstamo de documentos tanto físicos como virtuales, ¡entonces no dudes en reservar tu documento!
+                        Somos una librería reconocida a nivel nacional, nos destacamos por manejar diversos tipos de documentos como artículos, libros, etc. Además de esto manejamos el préstamo de documentos tanto físicos como virtuales, ¡entonces no dudes en reservar tu documento!
                     </p>
                 </div>
             </div>

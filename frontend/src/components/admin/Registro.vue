@@ -8,7 +8,7 @@
           <label for="firstname" class="block text-xs font-semibold text-gray-600 uppercase">Nombres</label>
           <input id="firstname" type="text" name="firstname" placeholder="John" autocomplete="given-name" v-model="firstname"
           class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" />
-          <p v-if="v_errors.firstname.$error" class="text-sm text-red-150 m-2">Ingrese sus nombre.</p>
+          <p v-if="v_errors.firstname.$error" class="text-sm text-red-150 m-2">Ingrese sus nombres.</p>
 
         </span>
         <span class="w-full sm:w-1/2">
@@ -28,7 +28,7 @@
       <label for="date" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Fecha de nacimiento</label>
       <input type="date" name="date" v-model="date_birth"
       class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" />
-      <p v-if="v_errors.date_birth.$error" class="text-sm text-red-150 m-2">Ingrese una fecha valida.</p>
+      <p v-if="v_errors.date_birth.$error" class="text-sm text-red-150 m-2">Ingrese una fecha válida.</p>
 
       <label for="password" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Contraseña</label>
       <input type="password" name="password" placeholder="**" autocomplete="new-password" v-model="password"
@@ -54,7 +54,7 @@
         <label for="documento" class="block text-xs font-semibold text-gray-600 uppercase">Número de documento</label>
         <input type="text" name="documento" v-model="document"
         class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
-        <p v-if="v_errors.document.$error" class="text-sm text-red-150 m-2">Este documento no es válido</p>
+        <p v-if="v_errors.document.$error" class="text-sm text-red-150 m-2">Este documento no es valido</p>
 
         </span>
       </div>
@@ -82,10 +82,10 @@
       <p v-if="v_errors.address.$error" class="text-sm text-red-150 m-2">Este campo es requerido</p>
 
 
-      <label for="phone" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Número telefonico</label>
+      <label for="phone" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Número telefónico</label>
       <input type="text" name="phone" v-model="phone"
       class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" />
-      <p v-if="v_errors.phone.$error" class="text-sm text-red-150 m-2">Número telefonico no válido</p>
+      <p v-if="v_errors.phone.$error" class="text-sm text-red-150 m-2">Número telefonico no valido</p>
 
 
       <div class="flex sm:justify-end mt-2 gap-x-4 gap-y-1 sm:flex-row flex-col">

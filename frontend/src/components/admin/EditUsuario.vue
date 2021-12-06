@@ -7,7 +7,7 @@
           <label for="firstname" class="block text-xs font-semibold text-gray-600 uppercase">Nombres</label>
           <input id="firstname" type="text" name="firstname" placeholder="John" autocomplete="given-name" v-model="firstname"
           class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" />
-          <p v-if="v_errors.firstname.$error" class="text-sm text-red-150 m-2">Ingrese sus nombre.</p>
+          <p v-if="v_errors.firstname.$error" class="text-sm text-red-150 m-2">Ingrese sus nombres.</p>
 
         </span>
         <span class="w-full sm:w-1/2">
@@ -37,7 +37,7 @@
       <label for="date" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Fecha de nacimiento</label>
       <input type="date" name="date" v-model="date_birth"
       class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" />
-      <p v-if="v_errors.date_birth.$error" class="text-sm text-red-150 m-2">Ingrese una fecha valida.</p>
+      <p v-if="v_errors.date_birth.$error" class="text-sm text-red-150 m-2">Ingrese una fecha válida.</p>
 
       <label for="password" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Contraseña</label>
       <input type="password" name="password" placeholder="**" autocomplete="new-password" v-model="password"
@@ -63,7 +63,7 @@
         <label for="documento" class="block text-xs font-semibold text-gray-600 uppercase">Número de documento</label>
         <input type="text" name="documento" v-model="document" disabled="true"
         class="block w-full p-3 mt-2 text-gray-700 bg-gray-400 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
-        <p v-if="v_errors.document.$error" class="text-sm text-red-150 m-2">Este documento no es válido</p>
+        <p v-if="v_errors.document.$error" class="text-sm text-red-150 m-2">Este documento no es valido</p>
 
         </span>
       </div>
