@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 
-const apiUrl = "http://localhost:8000/roro/"
+const apiUrl = process.env.NODE_ENV == 'development' ?
+'http://localhost:8000/roro/' : 'https://doculib.herokuapp.com/roro/'
 
 const crudClient = defineStore('clients', {
     state: () => ({
