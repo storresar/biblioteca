@@ -69,17 +69,14 @@
       class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" />
       <p v-if="v_errors.phone.$error" class="text-sm text-red-150 m-2">Número telefonico no válido</p>
 
-      <div class="flex justify-center mt-2">
-        <vue-recaptcha siteKey="6Ld3Y-wcAAAAAJOH0wFvfqG53ob76ilO7B2TQHMZ"
-        size="normal"
-        theme="light"
-        :tabindex="0"
-        @verify="recaptchaVerified"
-        @expire="recaptchaExpired"
-        @fail="recaptchaFailed"
-        ref="vueRecaptcha">
-        </vue-recaptcha>
-      </div>
+      <span class="w-full sm:w-2/3">
+        <label for="documento" class="block text-xs font-semibold text-gray-600 uppercase">Nombre de usuario</label>
+        <input type="text" name="documento" v-model="username"
+        class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
+        <p v-if="v_errors.username.$error" class="text-sm text-red-150 m-2">Ingrese un valor en este campo</p>
+        </span>
+
+      
 
       <button type="submit" class="w-full py-3 mt-2 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
         Registrarse
@@ -88,7 +85,7 @@
         Regresar
       </button>
       
-      <p class=" justify-center inline-block mt-4 text-xs text-gray-500 cursor-pointer hover:text-black">¿Ya te encuentras registrado?</p>
+      <p @click="iniciarS()" class=" justify-center inline-block mt-4 text-xs text-gray-500 cursor-pointer hover:text-black">¿Ya te encuentras registrado?</p>
     </form>
   </div>
 </div>
@@ -97,10 +94,11 @@
 <script>
 import { required, email, sameAs, numeric, minLength, maxLength } from '@vuelidate/validators'
 import useVuelidate from '@vuelidate/core'
-import vueRecaptcha from 'vue3-recaptcha2';
 import { mapActions } from 'pinia'
-import useUsers from '@/store/useUsers.js'
 import useClients from '@/store/useClients.js'
+import useUsers from '@/store/useUsers.js'
+import { openModal } from "jenesius-vue-modal";
+import LoginForm from "./LoginForm.vue";
 
 function calculateAge(birthday) { // birthday is a date
     var ageDifMs = Date.now() - new Date(birthday).getTime();
@@ -144,7 +142,6 @@ function validateDoc(document){
 
 export default {
   components: {
-    vueRecaptcha,
   },
   setup () {
     return { v_errors: useVuelidate() }
@@ -163,6 +160,7 @@ export default {
       phone: '3212223755',
       options: ['Cedula', 'Tarjeta de identidad'],
       captchaVerified: false,
+      username: "hi",
     }
   },
   validations () {
@@ -177,6 +175,7 @@ export default {
       document: { required, validateDoc, numeric, $autoDirty: true },
       address: { required, $autoDirty: true },
       phone: { required, validatePhone, numeric, $autoDirty: true },
+      username: { required, $autoDirty: true  },
     }
   },
   mounted() {
@@ -185,37 +184,39 @@ export default {
     
   },
   methods: {
-    ...mapActions(useUsers, ['verifyCaptcha, registerUser']),
-    ...mapActions(useClients, ['registerClient']),
+    ...mapActions(useUsers, ['verifyCaptcha, createUser']),
+    ...mapActions(useClients, ['createClient']),
+
     regresar(){
       this.$router.push('/')
     },
+    iniciarS(){
+      openModal(LoginForm);
+    },
     async submit () {
-      console.log(this.email);
+     
       const valid = await this.v_errors.$validate()
       if (valid) {
         if (this.captchaVerified) {
-          this.registerUser({
-            firstname: this.firstname,
-            lastname: this.lastname,
+          
+          const {id} = await this.createUser({
+            first_name: this.firstname,
+            username: this.username,
+            last_name: this.lastname,
             email: this.email,
             password: this.password,
-            date_birth: this.date_birth,
-            type_document: this.type_document,
-            document: this.document,
-            address: this.address,
             phone: this.phone,
+            id_role: parseInt(2),
           })
-          this.registerClient({
-            firstname: this.firstname,
-            lastname: this.lastname,
-            email: this.email,
-            password: this.password,
-            date_birth: this.date_birth,
-            type_document: this.type_document,
-            document: this.document,
+          await this.createClient({
+            born_date: this.date_birth.split('/').reverse().join('-'),
+            is_author : false,
+            num_document: this.document,
             address: this.address,
-            phone: this.phone,
+            phone_number: this.phone,
+            state: "D",
+            id_document: parseInt(1),
+            id_user: id,
           })
           this.$router.push('/')
         } else {

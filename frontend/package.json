@@ -20,7 +20,8 @@
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
     "vue-sweetalert2": "^5.0.2",
-    "vue3-recaptcha2": "^1.4.0"
+    "vue3-popper": "^1.4.0",
+    "vue3-recaptcha-v2": "^1.0.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
