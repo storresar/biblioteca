@@ -196,26 +196,21 @@ export default {
       if (valid) {
         if (this.captchaVerified) {
           this.registerUser({
-            firstname: this.firstname,
-            lastname: this.lastname,
+            first_name: this.firstname,
+            last_name: this.lastname,
             email: this.email,
             password: this.password,
-            date_birth: this.date_birth,
             type_document: this.type_document,
             document: this.document,
             address: this.address,
             phone: this.phone,
           })
           this.registerClient({
-            firstname: this.firstname,
-            lastname: this.lastname,
-            email: this.email,
-            password: this.password,
-            date_birth: this.date_birth,
+            born_date: this.date_birth,
             type_document: this.type_document,
-            document: this.document,
+            num_document: this.document,
             address: this.address,
-            phone: this.phone,
+            phone_number: this.phone,
           })
           this.$router.push('/')
         } else {
