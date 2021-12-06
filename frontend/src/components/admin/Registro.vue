@@ -44,9 +44,9 @@
       <div class="flex justify-between gap-3 mt-2">
         <span class="w-full sm:w-1/3">
           <label for="tipo_documento" class="block text-xs font-semibold text-gray-600 uppercase">Tipo de documento</label>
-          <select v-model="type_document"
+          <select v-model.number="type_selected"
           class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 focus:outline-none focus:bg-gray-300 focus:shadow-inner">
-            <option v-for="item of options" :key="item" :value="item">{{item}}</option>
+            <option v-for="item of options" :key="item.id" :value="item.id">{{item.name_doc}}</option>
           </select>
         </span>
         <span class="w-full sm:w-2/3">
@@ -159,10 +159,11 @@ export default {
       password_confirm: 'Ronditas11',
       date_birth: '10/15/1999',
       type_document: 'Cedula',
+      type_selected: 1,
       document: '1019152187',
       address: 'aKI',
       phone: '3212223755',
-      options: ['Cedula', 'Tarjeta de identidad'],
+      options: [{id:1, name_doc:"Cedula"}, {id:2, name_doc:"Tarjeta de identidad"}],
       id_role: 1,
       username: 'juanquintero',
     }
@@ -184,7 +185,13 @@ export default {
   },
   mounted() {
     //Todo : llamar al backend y guardar los tipos de documentos en type_document en un array
-
+    const apiUrl = process.env.NODE_ENV === 'production' ?
+    'https://doculib.herokuapp.com/roro/' : 'http://localhost:8000/roro/';
+    fetch(apiUrl + 'iddocument/')
+    .then(response => response.json())
+    .then(data => {
+      this.type_document = data
+    })
     
   },
   methods: {
@@ -213,7 +220,7 @@ export default {
             address: this.address,
             phone_number: this.phone,
             state: "D",
-            id_document: parseInt(1),
+            id_document: this.type_selected,
             id_user: id,
           })
         }

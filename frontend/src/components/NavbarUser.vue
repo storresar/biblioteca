@@ -36,7 +36,7 @@
         </div>
         <div class="absolute gap-3 inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <!-- Profile dropdown -->
-             <p class="text-white text-xs">USUARIO: {{user.username.toUpperCase()}}</p>
+             <p class="text-white text-xs">USUARIO: {{username.toUpperCase()}}</p>
             <div class="ml-3 relative">
 
             <div>
@@ -55,18 +55,32 @@
     </nav>
 </template>
 <script>
-    import useUsers from '@/store/useUsers.js'
-    import { mapState } from 'pinia'
-    export default {
+export default {
 
-        methods:{
-            logout(){  
-                window.localStorage.clear()
-                this.$router.push("/")
-            },
-        },
-        computed:{
-            ...mapState(useUsers, [ "user" ])
+
+    data(){
+        return {
+            username: "",
         }
+    },
+    methods:{
+        logout(){  
+            window.localStorage.clear()
+            this.$router.push("/")
+        },
+        getUserName: async () => {
+            const apiUrl = process.env.NODE_ENV === 'production' ?
+            'https://doculib.herokuapp.com/roro/' : 'http://localhost:8000/roro/';
+            const response = await fetch(`${apiUrl}users/${localStorage.getItem('userId')}/`)
+            const data = await response.json()
+            return data.username
+        }
+    },
+    mounted(){
+        this.getUserName()
+        .then(data => {
+            this.username = data
+        })
     }
+}
 </script>

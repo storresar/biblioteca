@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 
-const apiUrl = process.env.NODE_ENV == 'development' ?
-'http://localhost:8000/roro/' : 'https://doculib.herokuapp.com/roro/'
+const apiUrl = process.env.NODE_ENV === 'production' ?
+'https://doculib.herokuapp.com/roro/' : 'http://localhost:8000/roro/';
 
 const crudUser = defineStore('users', {
     state: () => ({
@@ -75,7 +75,7 @@ const crudUser = defineStore('users', {
             } else throw new Error("Error en el servidor, intentelo mas tarde")
         },
         async verifyCaptcha(captcha) {
-            const response = await fetch('https://rocky-basin-43749.herokuapp.com/api/verificar_captcha/', {
+            const response = await fetch(`${apiUrl}verificar_captcha/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

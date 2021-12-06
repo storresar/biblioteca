@@ -38,6 +38,25 @@ class author_requestViewSet(viewsets.ModelViewSet):
     serializer_class = author_requestSerialiazer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['id_client']
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        if request.data['state'] == 'A':
+            nuevo_autor = author(
+                id_request = instance,
+                num_posts = 0,
+                num_wait_posts = 0
+            )
+            nuevo_autor.save()
+            cliente_n = client.objects.get(pk = request.data['id_client'])
+            cliente_n.is_author = True
+            cliente_n.save()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
+
 class author_ViewSet(viewsets.ModelViewSet):
     queryset = author.objects.all()
     serializer_class = authorSerializer
@@ -48,10 +67,8 @@ class author_ViewSet(viewsets.ModelViewSet):
         if(id_user == None):
             return author.objects.all()
         else:
-            print('daskjdhsalkd')
             id = get_object_or_404(client.objects.filter(id_user=id_user))
             print(id)
-            print('daskjdhsalkd')
             id = get_object_or_404(author_request.objects.filter(id_client=id.id))
             return author.objects.filter(id_request=id)
     

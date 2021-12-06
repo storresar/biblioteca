@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 
-const apiUrl = process.env.NODE_ENV == 'development' ?
-'http://localhost:8000/roro/' : 'https://doculib.herokuapp.com/roro/'
+const apiUrl = process.env.NODE_ENV === 'production' ?
+'https://doculib.herokuapp.com/roro/' : 'http://localhost:8000/roro/';
 
 const crudClient = defineStore('clients', {
     state: () => ({
@@ -35,6 +35,7 @@ const crudClient = defineStore('clients', {
             const data = await response.json()
             if (response.ok) {
                 this.client = data[0]
+                return data[0]
             } else throw new Error("Error en el servidor, intentelo mas tarde")
         },
         async getAuthor(id) {

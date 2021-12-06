@@ -175,6 +175,8 @@ export default {
             });
             let doc = data.find(document => document.id == id)
             doc.state = "P"
+            doc.physical_stock = 5
+            doc.virtual_stock = 15
             await docs.updateDocument(doc)
             swal.fire("Exito", "La solicitud ha sido aceptada", "success")
         }

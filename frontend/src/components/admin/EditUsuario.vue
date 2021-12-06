@@ -193,8 +193,8 @@ export default {
 
   mounted() {
     //Todo : llamar al backend y guardar los tipos de documentos en type_document en un array
-    const apiUrl = process.env.NODE_ENV == 'development' ?
-    'http://localhost:8000/roro/' : 'https://doculib.herokuapp.com/roro/'
+    const apiUrl = process.env.NODE_ENV === 'production' ?
+    'https://doculib.herokuapp.com/roro/' : 'http://localhost:8000/roro/';
     fetch(apiUrl + 'iddocument/')
     .then(response => response.json())
     .then(data => {
@@ -221,6 +221,7 @@ export default {
       if(user.id_role === 2){
         this.getClient(user.id)
         .then(client => {
+          console.log(client)
           this.date_birth = client.born_date
           this.type_selected = client.id_document
           this.document = client.num_document
