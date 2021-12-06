@@ -55,7 +55,7 @@
                         <div class="flex flex-col items-center justify-center col-span-1">
                             <div class="relative p-5">
                                 <div class="absolute z-10 w-full h-full -mt-5 -ml-5 rounded-full rounded-tr-none bg-red-900"></div>
-                                <img class="relative z-20 w-full rounded-full" src="https://lh3.googleusercontent.com/proxy/Jl-z8lmXKXAAtvqw1E1wlr_LYgbw3oQFF-IAd-eQHuNI7FcUpcMhhoDEf-sKcCyIfWmuw86xXu2xN6Zv7mprF0cQC5DFNNU">
+                                <img class="relative z-20 w-full rounded-full" src="libroImg.png" alt="LibroImg">
                             </div>
                             <div class="mt-3 space-y-2 text-center">
                                 <div class="space-y-1 text-xs font-normal leading-6 text-white">
