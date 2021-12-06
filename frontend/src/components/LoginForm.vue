@@ -28,7 +28,7 @@
       <button
       class="bg-white hover:bg-red-50 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors duration-200 hover:text-white"
       type="button" @click="login">
-        Inicia sesión
+        Iniciar sesión
       </button>
      <div class=" flex flex-col-reverse" >
           <a v-if="false" class="inline-block align-baseline font-bold text-sm text-white hover:text-red-50 transition-colors duration-200" href="#">

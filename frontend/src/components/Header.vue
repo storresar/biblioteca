@@ -8,7 +8,7 @@
         <div class="flex flex-col sm:flex-row gap-2 items-center">
         <button @click="openLoginModal()"
         class="rounded border-2 border-red-450 px-4 py-2 h-11 text-white shadow-lg hover:bg-red-450">
-                Inicia sesión
+                Iniciar sesión
         </button>
         <button
         class="rounded border-2 border-red-450 px-4 py-2 h-11 text-white shadow-lg hover:bg-red-450" @click="registro()">

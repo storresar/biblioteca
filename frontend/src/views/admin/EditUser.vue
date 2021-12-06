@@ -1,7 +1,6 @@
 <template>
     <suspense>
-        <Editusuario
-        />
+        <Editusuario/>
     </suspense>
 </template>
 
