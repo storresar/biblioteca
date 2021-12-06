@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-const apiUrl = process.env.NODE_ENV == 'development' ?
+const apiUrl = process.env.NODE_ENV === 'production' ?
 'https://doculib.herokuapp.com/roro/' : 'http://localhost:8000/roro/';
 
 const crudReservations = defineStore('resevations', {
