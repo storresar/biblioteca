@@ -89,11 +89,11 @@
                 id="username" type="text" placeholder="Nombre del SSN" v-model="datos.thesis.ssn">
             </div>
         </div>
-        <div class="flex items-center justify-center  mb-2">
+        <div class="flex items-center justify-center  m-2">
             <button
             class="bg-white hover:bg-red-50 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors duration-200 hover:text-white"
             type="button" @click="actualizar()">
-                actualizar
+                Actualizar
             </button>
         </div>
     </form>
@@ -124,7 +124,7 @@ export default {
         const actualizar = async () => {
             swal.fire({
                 title: 'Espere un momento',
-                html: 'Estamos realizando la transacion',
+                html: 'Estamos realizando la transacción',
                 allowOutsideClick: false,
                 didOpen: () => {
                     swal.showLoading()
@@ -146,11 +146,11 @@ export default {
                         scientific.id_doc = datos.doc.id
                         docs.createScientific(scientific)
                     }
-                   swal.fire({title: 'Modificacion exitosa', icon:'success'})
+                   swal.fire({title: 'Modificación exitosa', icon:'success'})
                    closeModal();
                 })
             .catch(error => {
-            swal.fire({title: 'Error modificando el usario', icon:'error'})
+            swal.fire({title: 'Error modificando el usuario', icon:'error'})
             console.error(error);
             })
         }

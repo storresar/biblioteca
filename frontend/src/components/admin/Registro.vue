@@ -2,7 +2,8 @@
 <div class="grid min-h-screen place-items-center">
   <div class="w-11/12 px-12 py-4 bg-white sm:w-10/12 md:w-3/2 lg:w-full">
     <form class="mt-6" @submit.prevent="submit">
-      <div class="flex justify-between gap-3">
+      <label class="block text-xs font-semibold text-gray-black m-4 uppercase">Todos los campos son obligatorios</label>
+      <div class="flex flex-col sm:flex-row justify-between gap-3 mt-2">
         <span class="w-full sm:w-1/2">
           <label for="firstname" class="block text-xs font-semibold text-gray-600 uppercase">Nombres</label>
           <input id="firstname" type="text" name="firstname" placeholder="John" autocomplete="given-name" v-model="firstname"
@@ -18,7 +19,7 @@
 
         </span>
       </div>
-      <label for="email" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">E-mail</label>
+      <label for="email" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Correo electrónico</label>
       <input type="text" name="email" placeholder="john.doe@company.com" autocomplete="email" v-model="email"
       class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" />
       <p v-if="v_errors.email.$error" class="text-sm text-red-150 m-2">Ingrese un email valido.</p>
@@ -41,7 +42,7 @@
       <p v-if="v_errors.password_confirm.$error" class="text-sm text-red-150 m-2">Las claves no coinciden.</p>
 
       
-      <div class="flex justify-between gap-3 mt-2">
+      <div class="flex flex-col sm:flex-row justify-between gap-3 mt-2">
         <span class="w-full sm:w-1/3">
           <label for="tipo_documento" class="block text-xs font-semibold text-gray-600 uppercase">Tipo de documento</label>
           <select v-model.number="type_selected"
@@ -58,7 +59,7 @@
         </span>
       </div>
 
-      <div class="flex justify-between gap-3 mt-2">
+      <div class="flex flex-col sm:flex-row justify-between gap-3 mt-2">
         <span class="w-full sm:w-2/3">
         <label for="documento" class="block text-xs font-semibold text-gray-600 uppercase">Nombre de usuario</label>
         <input type="text" name="documento" v-model="username"
@@ -87,12 +88,14 @@
       <p v-if="v_errors.phone.$error" class="text-sm text-red-150 m-2">Número telefonico no válido</p>
 
 
-      <button type="submit" class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
+      <div class="flex sm:justify-end mt-2 gap-x-4 gap-y-1 sm:flex-row flex-col">
+        <button type="submit" class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
         Registrarse
-      </button>
-      <button @click="regresar()" class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
-        Regresar
-      </button>
+        </button>
+        <button @click="regresar()" class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
+          Regresar
+        </button>
+      </div>
       
     </form>
   </div>
@@ -152,20 +155,20 @@ export default {
   },
   data() {
     return {
-      firstname: 'Juan',
-      lastname: 'Quintero',
-      email: 'gaortega@unbosque.edu.co',
-      password: 'Ronditas11',
-      password_confirm: 'Ronditas11',
-      date_birth: '10/15/1999',
-      type_document: 'Cedula',
+      firstname: '',
+      lastname: '',
+      email: '',
+      password: '',
+      password_confirm: '',
+      date_birth: '',
+      type_document: '',
       type_selected: 1,
-      document: '1019152187',
-      address: 'aKI',
-      phone: '3212223755',
+      document: '',
+      address: '',
+      phone: '',
       options: [{id:1, name_doc:"Cedula"}, {id:2, name_doc:"Tarjeta de identidad"}],
       id_role: 1,
-      username: 'juanquintero',
+      username: '',
     }
   },
   validations () {

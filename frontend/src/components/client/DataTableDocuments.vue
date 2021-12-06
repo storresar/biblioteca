@@ -13,10 +13,10 @@
                         Tipo
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Fecha de publicacion
+                        Fecha de publicación
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Cantidad Fisica
+                        Cantidad Física
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Cantidad virtual
@@ -43,7 +43,7 @@
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div v-if="doc.id_type_doc == 1" class="text-sm text-gray-500">Libro</div>
                         <div v-if="doc.id_type_doc == 2" class="text-sm text-gray-500">Lectura</div>
-                        <div v-if="doc.id_type_doc == 3" class="text-sm text-gray-500">Articulo cientifico</div>
+                        <div v-if="doc.id_type_doc == 3" class="text-sm text-gray-500">Artículo científico</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-sm text-gray-500">{{doc.publication_date}}</div>
@@ -56,7 +56,7 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <button v-on:click="reserveDocumentPhysic(doc.id,doc.physical_stock)" class="bg-red-150 hover:bg-red-450 text-white font-bold py-2 px-4 rounded">
-                            RESERVA FISICA
+                            RESERVA FÍSICA
                         </button>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

@@ -2,6 +2,8 @@
 <div class="grid min-h-screen place-items-center">
   <div class="w-11/12 px-12 py-4 bg-white sm:w-10/12 md:w-3/2 lg:w-full">
     <form class="mt-6" @submit.prevent="submit">
+      <label class="block text-xs font-semibold text-black uppercase m-4">Todos los campos son obligatorios</label>
+
       <div class="flex flex-col sm:flex-row justify-between gap-3">
         <span class="w-full sm:w-1/2">
           <label for="firstname" class="block text-xs font-semibold text-gray-600 uppercase">Nombres</label>
@@ -24,7 +26,7 @@
       <p v-if="v_errors.username.$error" class="text-sm text-red-150 m-2">Ingrese un valor en este campo</p>
 
 
-      <label for="email" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">E-mail</label>
+      <label for="email" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Correo electrónico</label>
       <input type="text" name="email" placeholder="john.doe@company.com" autocomplete="email" v-model="email"
       class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" />
       <p v-if="v_errors.email.$error" class="text-sm text-red-150 m-2">Ingrese un email valido.</p>
@@ -87,12 +89,14 @@
         </vue-recaptcha>
       </div>
 
-      <button type="submit" class="w-full py-3 mt-2 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
-        Registrarse
-      </button>
-      <button @click="regresar()" class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
-        Regresar
-      </button>
+      <div class="flex sm:justify-end mt-2 gap-x-4 gap-y-1 sm:flex-row flex-col">
+        <button type="submit" class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
+          Registrarse
+        </button>
+        <button @click="regresar()" class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
+          Regresar
+        </button>
+      </div>
       
       <p class=" justify-center inline-block mt-4 text-xs text-gray-500 cursor-pointer hover:text-black">¿Ya te encuentras registrado?</p>
     </form>
@@ -157,19 +161,19 @@ export default {
   },
   data() {
     return {
-      firstname: 'Juan',
-      lastname: 'Quintero',
-      email: 'gaortega@unbosque.edu.co',
-      password: 'Ronditas11',
-      password_confirm: 'Ronditas11',
-      date_birth: '1999-10-15',
+      firstname: '',
+      lastname: '',
+      email: '',
+      password: '',
+      password_confirm: '',
+      date_birth: '',
       type_selected: 1,
-      document: '1019152187',
-      address: 'aKI',
-      phone: '3212223755',
+      document: '',
+      address: '',
+      phone: '',
       options: [{id:1, name_doc:"Cedula"}, {id:2, name_doc:"Tarjeta de identidad"}],
       captchaVerified: false,
-      username: 'quinterbell',
+      username: '',
     }
   },
   validations () {
