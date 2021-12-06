@@ -32,7 +32,7 @@
                         </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <div v-if="doc.id_type_stock == 1" class="text-sm text-gray-500">FISICA</div>
+                        <div v-if="doc.id_type_stock == 1" class="text-sm text-gray-500">FÍSICA</div>
                         <div v-if="doc.id_type_stock == 2" class="text-sm text-gray-500">VIRTUAL</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">

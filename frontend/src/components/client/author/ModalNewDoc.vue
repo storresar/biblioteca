@@ -112,12 +112,12 @@ export default {
         const swal = inject('$swal')
         const datos = reactive({
             nombre: "VACIO",
-            correo: "ejemplo@ejemplo.com",
+            correo: "VACIO",
             numero: "VACIO",
             isbn: "VACIO",
             paginas: 0,
             congreso: "VACIO",
-            ssn: "VACIO ",
+            ssn: "VACIO",
             tipo: '1',
         });
         const closeLoginModal = () => {
@@ -127,7 +127,7 @@ export default {
             const store = useClients()
             swal.fire({
                 title: 'Espere un momento',
-                html: 'Estamos realizando la transacion',
+                html: 'Estamos realizando la transacción',
                 allowOutsideClick: false,
                 didOpen: () => {
                     swal.showLoading()
@@ -176,7 +176,7 @@ export default {
                    closeModal();
                 })
             .catch(error => {
-            swal.fire({title: 'Error en el registo', icon:'error'})
+            swal.fire({title: 'Error en el registro', icon:'error'})
             console.error(error);
             })
         }

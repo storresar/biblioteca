@@ -2,16 +2,6 @@
     <div class="flex flex-col justify-start">
 
         <Header></Header>
-        <nav class="flex justify-center py-2 bg-red-450">
-            <input type="text" placeholder="Busque un documento por titulo"
-            class="w-96 rounded-none pl-4 appearance-none bg-transparent  text-white mr-3 py-1 px-2 leading-tight focus:outline-none border-b-2">
-            <button class="flex-shrink-0  text-white hover:text-teal-800 text-sm py-1 px-2 rounded ">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-            </button>
-        </nav>
-
         <main class="flex justify-between bgImagen h-96 ">
         </main>
 
@@ -54,7 +44,6 @@
                     <div v-for="item in lista" :key="item">
                         <div class="flex flex-col items-center justify-center col-span-1">
                             <div class="relative p-5">
-                                <div class="absolute z-10 w-full h-full -mt-5 -ml-5 rounded-full rounded-tr-none bg-red-900"></div>
                                 <img class="relative z-20 w-full rounded-full" src="libroImg.png" alt="LibroImg">
                             </div>
                             <div class="mt-3 space-y-2 text-center">
@@ -65,7 +54,8 @@
                                     <h5 v-if="item.id_type_doc == 1">Tipo de documento: Libro</h5>
                                     <h5 v-if="item.id_type_doc == 2">Tipo de documento: Lectura</h5>
                                     <h5 v-if="item.id_type_doc == 3">Tipo de documento: Artículo científico</h5>
-                                    <button class="bg-red-350 hover:bg-red-150 text-white font-bold py-1 px-3 border rounded">RESERVAR</button>
+                                    <button @click="openLoginForm"
+                                    class="bg-red-350 hover:bg-red-150 text-white font-bold py-1 px-3 border rounded">RESERVAR</button>
                                 </div>
                             </div>
                         </div>
@@ -88,7 +78,7 @@
                         SOBRE NOSOTROS
                     </h2>
                     <p class="pt-4 pb-8 m-0 leading-7 text-gray-700 border-0 border-gray-300 sm:pr-12 xl:pr-32 lg:text-lg">
-                        Nosotros somos una librería reconocida a nivel nacional, nos destacamos por manejar diversos tipos de documentos como artículos, libros, etc. Ademas de esto manejamos el préstamo de documentos tanto físicos como virtuales, entonces no dudes en reservar tu documento!!
+                        Nosotros somos una librería reconocida a nivel nacional, nos destacamos por manejar diversos tipos de documentos como artículos, libros, etc. Además de esto manejamos el préstamo de documentos tanto físicos como virtuales, ¡entonces no dudes en reservar tu documento!
                     </p>
                 </div>
             </div>
@@ -97,7 +87,7 @@
         <section class="py-10 bg-black">
             <div class="container max-w-6xl mx-auto">
                 <h2 class="text-4xl font-bold tracking-tight text-center text-white">SERVICIOS</h2>
-                <p class="mt-2 text-lg text-center text-gray-600">Mira los servicios que ofrece nuestra pagina</p>
+                <p class="mt-2 text-lg text-center text-gray-600">Mira los servicios que ofrece nuestra página</p>
                 <div class="grid grid-cols-4 gap-8 mt-10 sm:grid-cols-8 lg:grid-cols-12 sm:px-8 xl:px-0">
 
                     <div class="relative flex flex-col items-center justify-between col-span-4 px-8 py-12 space-y-4 overflow-hidden bg-gray-100 sm:rounded-xl">
@@ -107,7 +97,7 @@
                             </svg>
                         </div>
                         <h4 class="text-xl font-medium text-gray-700">CONSULTAR</h4>
-                        <p class="text-base text-center text-gray-500">En la biblioteca virtual podrás encontrar diversa cantidad de documentos relacionados con el tema de tu interes.</p>
+                        <p class="text-base text-center text-gray-500">En la biblioteca virtual podrás encontrar diversa cantidad de documentos relacionados con el tema de tu interés.</p>
                     </div>
 
                     <div class="flex flex-col items-center justify-between col-span-4 px-8 py-12 space-y-4 bg-gray-100 sm:rounded-xl">
@@ -141,7 +131,7 @@
             <div class="flex flex-wrap items-center -mx-3">
             <div class="order-1 w-full px-3 lg:w-1/2 lg:order-0">
                 <div class="w-full lg:max-w-md">
-                <h2 class="mb-4 text-3xl font-bold leading-tight tracking-tight sm:text-4xl font-heading text-white">CONTACTENOS</h2>
+                <h2 class="mb-4 text-3xl font-bold leading-tight tracking-tight sm:text-4xl font-heading text-white">CONTÁCTENOS</h2>
                 <p class="mb-4 font-medium tracking-tight text-gray-400 xl:mb-6">A continuación le mostraremos las formas para contactarnos:</p>
                 <ul>
                     <li class="flex items-center py-2 space-x-4 xl:py-3">
@@ -171,7 +161,7 @@
                 </ul>
                 </div>
             </div>
-            <div class="w-full px-3 mb-12 lg:w-1/2 order-0 lg:order-1 lg:mb-0"><img class="mx-auto sm:max-w-sm lg:max-w-full" src="https://lh3.googleusercontent.com/proxy/1RhXGKailPUtqFv57HKez83QjC_ldulQsDjmXJcYQSKYCSSyMGLpq4A4QM7hw-XL6_3VqBUWGq657J7tBZh6DG9tnmSzeEhE4lbia_B3BpoGyow1VRaqNkcFTaMY" alt="feature image"></div>
+            <div class="w-full px-3 mb-12 lg:w-1/2 order-0 lg:order-1 lg:mb-0"><img class="mx-auto sm:max-w-sm lg:max-w-full" src="contactenos.png" alt="feature image"></div>
             </div>
         </div>
         </section>
@@ -185,6 +175,9 @@ import Footer from "./Footer.vue";
 import Header from "./Header.vue"
 import { mapState, mapActions} from 'pinia'
 import useDoc from "@/store/useDoc.js"
+import { openModal } from "jenesius-vue-modal";
+import LoginForm from "./LoginForm.vue";
+
 export default {
     data() {
         return{
@@ -195,7 +188,10 @@ export default {
         ...mapState(useDoc,['documents'])
     },
     methods: {
-        ...mapActions(useDoc,['getTypeDocuments'])
+        ...mapActions(useDoc,['getTypeDocuments']),
+        openLoginForm() {
+            openModal(LoginForm);
+        }
     },
     mounted() {
         this.getTypeDocuments('P')

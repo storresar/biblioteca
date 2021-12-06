@@ -1,6 +1,6 @@
 <template>
 <div class="relative w-full max-w-xs">
-  <div class="absolute z-10 right-1 top-1">
+  <div class="absolute z-50 right-1 top-1">
     <button @click="closeLoginModal()">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-x-circle-fill text-white hover:text-red-500 trasition duration-150" viewBox="0 0 16 16">
         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
@@ -28,7 +28,7 @@
       <button
       class="bg-white hover:bg-red-50 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors duration-200 hover:text-white"
       type="button" @click="login">
-        Inicia sesion
+        Inicia sesión
       </button>
      <div class=" flex flex-col-reverse" >
           <a v-if="false" class="inline-block align-baseline font-bold text-sm text-white hover:text-red-50 transition-colors duration-200" href="#">
@@ -78,9 +78,9 @@ export default {
       .then(() => getUser())
       .then(user => {
         if (user.id_role === 1) {
-          router.push('/admin');
+          router.push('/admin/userlist');
         } else {
-          router.push('/client');
+          router.push('/client/reserve');
         }
         closeModal();
       })

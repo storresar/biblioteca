@@ -103,7 +103,6 @@ export default {
         lecture: Object,
     },
     setup(props) {
-        console.log(props)
         const datos = {
             titulo : props.info.title,
             email : props.info.email_contact,
