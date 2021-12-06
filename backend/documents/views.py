@@ -4,8 +4,10 @@ from rest_framework.response import Response
 from .serializers import documentSerializer,lecturesSerializer,bookSerializer,scientific_articleSerializer,audit_documentsSerializer
 from .models import document,lectures,book,scientific_article,audit_documents
 from users.models import client,author,author_request
+from reserve.models import licences
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
+import uuid
 
 # Create your views here.
 
@@ -38,6 +40,13 @@ class documentViewSet(viewsets.ModelViewSet):
             type_audit = 'CREACIÓN DE NUEVO DOCUMENTO',
         )
         nueva_auditoria.save()
+        for i in range(0, 5):
+            nueva_licencia = licences(
+                id_document = var1,
+                licence = uuid.uuid4(),
+                available = 3
+            )
+            nueva_licencia.save()
         return Response(serializer.data)
 
     def update(self, request, *args, **kwargs):

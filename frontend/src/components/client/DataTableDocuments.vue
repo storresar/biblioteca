@@ -176,6 +176,7 @@ export default {
                         id_client: store.client.id,
                         id_type_stock: 2
                     })
+                    this.$swal('Reserva Exitosa', 'Felicidades la reserva fue exitosa', 'success')
                 }else{
                     this.$swal('Error', 'Ya tiene reservas con este título', 'error')
                 }
@@ -186,7 +187,7 @@ export default {
     },
     async setup() {
          const store = useDoc()
-         await store.getDocuments()
+         await store.getTypeDocuments('P')
          const docs = computed(() => store.documents)
         const nPages = 8
         const begin = ref(0)

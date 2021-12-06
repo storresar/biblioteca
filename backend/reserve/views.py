@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.response import Response
 from .serializers import reservationSerializer,p_reserveSerializer,v_reserveSerializer
-from .models import reservation,p_reserve,v_reserve
+from .models import reservation,p_reserve,v_reserve,licences
 from documents.models import document
 from datetime import datetime,timedelta,date
 from django.shortcuts import get_object_or_404
@@ -20,8 +20,8 @@ class reservationViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         if 'data._mutable' in request.data : request.data._mutable = True
+        doc = get_object_or_404(document.objects.filter(pk = request.data['id_document']))
         if request.data['id_type_stock'] == 1:
-            doc = get_object_or_404(document.objects.filter(pk = request.data['id_document']))
             nuevodoc = document(
                 pk = doc.pk,
                 title = doc.title,
@@ -36,7 +36,6 @@ class reservationViewSet(viewsets.ModelViewSet):
             )
             nuevodoc.save()
         else:
-            doc = get_object_or_404(document.objects.filter(pk = request.data['id_document']))
             nuevodoc = document(
                 pk = doc.pk,
                 title = doc.title,
@@ -62,9 +61,24 @@ class reservationViewSet(viewsets.ModelViewSet):
             )
             nueva_reserva.save()
         else:
+            licences_dis = licences.objects.filter(id_document=doc.id)
+            print(licences_dis)
+            esta_disponible = False
+            licencia = ''
+            i = 0
+            while esta_disponible == False:
+                if licences_dis[i].available > 0:
+                    esta_disponible = True
+                    licencia = licences_dis[i]
+                    licencia.available = licencia.available - 1
+                    licencia.save() 
+                else:
+                    i = i + 1
+            print(licencia)
             nueva_reserva = v_reserve(
                 id_reserve = var1,
-                licence = '',
+                id_licence = licencia,
+                licence = licencia.licence,
                 due_Date = (datetime.now() + timedelta(days=7)).strftime("%Y-%m-%d"),
                 num_renovations = 0
             )
