@@ -194,7 +194,7 @@ export default {
   mounted() {
     //Todo : llamar al backend y guardar los tipos de documentos en type_document en un array
     const apiUrl = process.env.NODE_ENV == 'development' ?
-    'http://localhost:8000/roro/' : 'https://doculib.herokuapp.com/roro/'
+    'https://doculib.herokuapp.com/roro/' : 'http://localhost:8000/roro/';
     fetch(apiUrl + 'iddocument/')
     .then(response => response.json())
     .then(data => {
